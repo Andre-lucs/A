@@ -1,0 +1,36 @@
+# Dependências
+/Backend/node_modules
+/Frontend/node_modules
+
+# Arquivos de log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor de código
+/.idea
+/.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Build output
+/dist
+
+# Arquivos temporários
+.DS_Store
+Thumbs.db
+
+# Configurações do ambiente
+.env
+
+# TypeScript
+*.tsbuildinfo
+
+# Testes de cobertura
+/coverage
+
+# Ignorar Yarn Lockfiles
+.yarn-integrity
