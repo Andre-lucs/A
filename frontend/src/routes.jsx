@@ -1,7 +1,11 @@
 import {createBrowserRouter} from 'react-router-dom';
+import {PoliceOccurrences} from '../src/pages/PoliceOccurrences'
+import {CreateOccurrence} from '../src/pages/CreateOccurrence'
+import {OccurrenceMap} from '../src/pages/OccurrenceMap'
+import {Occurrence} from '../src/pages/Occurrence'
+import {RootLayout} from '../src/RootLayout'
 
-
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
     {
         path: '/',
         element: <RootLayout/>,
