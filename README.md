@@ -16,8 +16,7 @@ tabelas :
 	
 	título
 	tipo (assalto, furto, dentre outros)
-	data
-	hora
+	data e hora
 	localização geográfica (utilizando o postgis)
 
 funcionalidades:
@@ -32,8 +31,8 @@ funcionalidades:
 
 caminho da api:
 
-GET /ocorrencias
+GET /ocorrencias/
 GET /ocorrencias/{id}
-POST /ocorrencias
+POST /ocorrencias/
 DELETE /ocorrencias/{id}
 PUT /ocorrencias/{id}
