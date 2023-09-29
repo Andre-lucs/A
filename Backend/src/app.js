@@ -3,7 +3,7 @@ import express, { json, urlencoded, static as static_ } from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import { join } from 'path';
-
+import cors from 'cors';
 
 //routers
 import indexRouter from './routes/index.js';
@@ -16,6 +16,7 @@ app.use(logger('dev'));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors());
 
 //using routers
 app.use('/', indexRouter);
@@ -36,7 +37,9 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({
+    error: err.message
+  });
 });
 
 export default app;

@@ -10,7 +10,11 @@ async function create({titulo, tipo, data_e_hora, localizacao}) {
         });
         return novaOcorrencia;
     } catch (error) {
-        throw new Error('Erro ao criar a ocorrência: ' + error.message);
+        let err = new Error('Erro ao criar a ocorrência: ' + error.message);
+        if(error.message.includes("violates not-null constraint")){
+            err.status = 400;
+        }
+        throw err;
     }
 }
 async function findAll(){
@@ -24,9 +28,16 @@ async function findAll(){
 async function findById(id) {
     try{
         const ocorrencia = await Ocorrencia.findByPk(id);
+        if(!ocorrencia){
+            var err =new Error('Ocorrência não encontrada');
+            err.status = 404;
+            throw err;
+        }
         return ocorrencia;
     } catch (error) {
-        throw new Error('Erro ao procurar a ocorrência: ' + error.message);
+        let err = new Error('Erro ao procurar a ocorrência: ' + error.message);
+        err.status = error.status;
+        throw err;
     }
 }
 async function update(id, novosDados, returnObj = false) {
