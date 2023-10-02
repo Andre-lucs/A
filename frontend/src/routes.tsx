@@ -1,9 +1,9 @@
 import {createBrowserRouter} from 'react-router-dom';
-import {PoliceOccurrences} from '../src/pages/PoliceOccurrences'
-import {CreateOccurrence} from '../src/pages/CreateOccurrence'
-import {OccurrenceMap} from '../src/pages/OccurrenceMap'
-import {Occurrence} from '../src/pages/Occurrence'
-import {RootLayout} from '../src/RootLayout'
+import {PoliceOccurrences} from './pages/PoliceOccurrences'
+import {CreateOccurrence} from './pages/CreateOccurrence'
+import {OccurrenceMap} from './pages/OccurrenceMap'
+import {Occurrence} from './pages/Occurrence'
+import {RootLayout} from './RootLayout'
 
 export const router = createBrowserRouter([
     {
