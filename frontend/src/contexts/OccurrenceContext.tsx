@@ -10,6 +10,7 @@ type Occurrence = {
     title: string,
     type: string,
     dateTime: string,
+    location: {lat: number, lng: number}
 }
 
 interface IOccurrenceContext {
@@ -27,6 +28,7 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
     const [occurrences, setOccurences] = useState<Occurrence[]>([]);
 
     const registryOccurrence = (occurrence : Occurrence) => {
+        console.log(occurrence)
         if(occurrence)
             setOccurences(state =>  [occurrence, ...state])
     }
