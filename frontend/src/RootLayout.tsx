@@ -1,15 +1,13 @@
 import { Outlet } from "react-router-dom";
 import {Link} from 'react-router-dom';
 
+
 export function RootLayout () {
     return  (
-        <div>
-          <header>
-                <h1>Ocorrências policiais</h1>
-          </header>
-          <main>
+        <div className="w-full">
+          <main className=" h-screen flex flex-col items-center gap-5 pt-5">
              <div>
-                <nav>
+                <nav className="flex gap-10">
                     <Link to='/'>Ocorrências</Link>
                      <Link to='mapa'>Mapa</Link>
                 </nav>
