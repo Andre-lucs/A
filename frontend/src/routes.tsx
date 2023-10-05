@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
                 element: <CreateOccurrence/>
             }, 
             {
-                path: 'ocorrencia/:id',
+                path: 'ocorrencia/:idOccurrence',
                 element: <Occurrence/>
             }
         ]
