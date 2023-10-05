@@ -21,7 +21,7 @@ if(!isLoaded) return <div>Loading...</div>
     <div id='map'>
       <GoogleMap 
           zoom={5}
-          center={location && defaultCenter} 
+          center={location ?? defaultCenter} 
           id='map'> 
             {
              !location ? occurrences.map(({id, location}) => (

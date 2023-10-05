@@ -22,7 +22,7 @@ if(!isLoaded) return <div>Loading...</div>
       <label htmlFor={name}>{label}</label>
       <GoogleMap 
           zoom={10}
-          options={{minZoom: 10}}
+          options={{minZoom: 5}}
           center={location} 
           id='map' 
           onClick={handleClick}
