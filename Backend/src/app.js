@@ -19,8 +19,7 @@ app.use(cookieParser());
 app.use(cors());
 
 //using routers
-app.use('/', indexRouter);
-app.use('/ocorrencias', ocorrenciasRouter);
+app.use('/', ocorrenciasRouter);
 
 
 
