@@ -1,16 +1,23 @@
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {Map} from '../components/Map'
 import { useOccurrence } from '../hooks/useOccurrences'
 
 export function Occurrence () {
 
-    const {occurrences} = useOccurrence();
+    const navigate = useNavigate();
+    const {occurrences, deleteOccurrence} = useOccurrence();
     const {idOccurrence} = useParams();
     let occurrence = null;
-    console.log(idOccurrence)
+
+    
+    function handleClick () {
+        if(idOccurrence)
+            deleteOccurrence(+idOccurrence)
+            navigate('/');
+    }
+    
     if(idOccurrence)
         occurrence = occurrences.find((occurrence) => occurrence.id === +idOccurrence)
-
 
     if(occurrence) 
         return (
@@ -18,12 +25,17 @@ export function Occurrence () {
                 <div>
                     <h1 className='font-bold text-2xl'>{occurrence.title}</h1>
                     <div className='flex gap-3 my-3'>
-                        <button className='bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded mr-2 focus:outline-none focus:ring focus:ring-red-300'>
+                        <button 
+                            className='bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded mr-2 focus:outline-none focus:ring focus:ring-red-300'
+                            onClick={handleClick}
+                            >
                             Excluir
                         </button>
-                        <button className='bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded focus:outline-none focus:ring focus:ring-blue-300'>
-                            Atualizar
-                        </button>
+                        <Link to={`/atualizar-ocorrencia/${idOccurrence}`}>
+                            <button className='bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded focus:outline-none focus:ring focus:ring-blue-300'>
+                                Atualizar
+                            </button>
+                        </Link>
                     </div>
                     <div className='flex flex-col gap-3'>
                         <p><span className="font-bold">Tipo:</span> {occurrence.type}</p>

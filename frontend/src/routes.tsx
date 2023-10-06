@@ -4,6 +4,7 @@ import {CreateOccurrence} from './pages/CreateOccurrence'
 import {OccurrenceMap} from './pages/OccurrenceMap'
 import {Occurrence} from './pages/Occurrence'
 import {RootLayout} from './RootLayout'
+import { UpdateOccurrence } from './pages/UpdateOccurrence';
 
 export const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
             {
                 path: 'ocorrencia/:idOccurrence',
                 element: <Occurrence/>
+            }, 
+            {
+                path: 'atualizar-ocorrencia/:idOccurrence',
+                element: <UpdateOccurrence/>
             }
         ]
     }

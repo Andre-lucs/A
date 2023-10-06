@@ -17,6 +17,7 @@ interface IOccurrenceContext {
     occurrences: Occurrence[];
     registryOccurrence: (occurrence: Occurrence) => void;
     deleteOccurrence: (idOccurrence : number) => void;
+    updateOccurence: (occurrence : Occurrence) => void
 }
 
 export const OccurrencesContext = createContext<IOccurrenceContext>({} as IOccurrenceContext);
@@ -45,10 +46,18 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
         }
     }
 
+    const updateOccurence = (occurrenceUp: Occurrence) => {
+        setOccurences(state => {
+            const newState = state.map(occurrence => (occurrence.id === occurrenceUp.id ? {...occurrence, ...occurrenceUp} : occurrence))
+            return newState;
+        })
+    }
+
     const dataContext : IOccurrenceContext = {
         occurrences,
         registryOccurrence,
-        deleteOccurrence
+        deleteOccurrence,
+        updateOccurence
     }
     
     return <OccurrencesContext.Provider value={dataContext}>{children}</OccurrencesContext.Provider>
