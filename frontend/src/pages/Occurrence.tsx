@@ -45,7 +45,7 @@ export function Occurrence () {
                     </div>
                 </div>
                 <div>
-                    <Map location={occurrence.location}/>
+                    <Map location={occurrence.location} className='h-96 w-96'/>
                 </div>
             </div>
     )

@@ -1,12 +1,12 @@
 import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
-import './Map.css';
 import { useOccurrence } from '../hooks/useOccurrences';
 
 type MapProps = {
   location?: {lat: number, lng: number}
+  className?: string 
 }
 
-export function Map ({location}: MapProps) {
+export function Map ({location, className}: MapProps) {
 
   const {occurrences} = useOccurrence();
   const { isLoaded } = useLoadScript({
@@ -18,11 +18,12 @@ export function Map ({location}: MapProps) {
 
 if(!isLoaded) return <div>Loading...</div>    
   return (
-    <div id='map'>
+    <div className='w-full min-h-full bg-black'>
       <GoogleMap 
           zoom={5}
           center={location ?? defaultCenter} 
-          id='map'> 
+          mapContainerClassName={className}
+          > 
             {
              !location ? occurrences.map(({id, location}) => (
                 <MarkerF key={id} position={location}/> 

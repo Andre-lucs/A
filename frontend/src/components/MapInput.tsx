@@ -1,5 +1,5 @@
 import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
-import './Map.css';
+
 
 
 type MapInputProps = {
@@ -26,7 +26,7 @@ if(!isLoaded) return <div>Loading...</div>
           center={location} 
           id='map' 
           onClick={handleClick}
-          mapContainerClassName='ml-2 rounded'> 
+          mapContainerClassName='ml-2 rounded h-96 w-96'> 
             <MarkerF position={location} />
       </GoogleMap>
     </div>
