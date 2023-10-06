@@ -1,12 +1,13 @@
 import Ocorrencia from "../model/Ocorrencia.js";
 
-async function create({titulo, tipo, data_e_hora, localizacao}) {
+async function create({title, type, date, location, description}) {
     try {
         const novaOcorrencia = await Ocorrencia.create({
-        titulo,
-        tipo,
-        data_e_hora,
-        localizacao,
+        title,
+        type,
+        date,
+        location,
+        description
         });
         return novaOcorrencia;
     } catch (error) {

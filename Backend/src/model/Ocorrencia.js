@@ -7,19 +7,26 @@ const Ocorrencia = sequelize.define('ocorrencias', {
         primaryKey : true,
         autoIncrement: true
     },
-    titulo : {
-        type : DataTypes.STRING
+    title : {
+        type : DataTypes.STRING,
+        field: "titulo"
     },
-    tipo : {
-        type : DataTypes.STRING
+    type : {
+        type : DataTypes.STRING,
+        field: "tipo"
     },
-    data_e_hora : {
-        type : DataTypes.DATE
+    date : {
+        type : DataTypes.DATE,
+        field: "data_e_hora"
     },
-    localizacao : {
-        type : DataTypes.GEOGRAPHY
-    }
-      
+    location : {
+        type : DataTypes.GEOGRAPHY,
+        field: "localizacao"
+    },
+    description :{
+        type : DataTypes.STRING,
+        field : "descricao"
+      }
 }, {
     timestamps: false
 });

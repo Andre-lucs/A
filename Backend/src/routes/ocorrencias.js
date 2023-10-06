@@ -25,6 +25,7 @@ router.get('/:id', async (req, res, next)=>{
 router.post('/', async (req, res, next)=>{
     try {
         var ocorrencia = req.body;
+        console.log(ocorrencia);
         ocorrencia = await OcorrenciaService.create(ocorrencia);
         res.json(ocorrencia);
     } catch (error) {

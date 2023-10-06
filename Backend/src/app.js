@@ -6,7 +6,6 @@ import { join } from 'path';
 import cors from 'cors';
 
 //routers
-import indexRouter from './routes/index.js';
 import ocorrenciasRouter from './routes/ocorrencias.js';
 
 var app = express();
