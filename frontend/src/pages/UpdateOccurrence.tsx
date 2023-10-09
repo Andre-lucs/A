@@ -2,10 +2,12 @@ import {useOccurrence} from '../hooks/useOccurrences';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Form } from '../components/Form';
 
+
 type Occurrence = {
     title: string,
     type: string,
-    dateTime: string,
+    date: string,
+    description: string
     location: {lat: number, lng: number}
 }
 
@@ -21,9 +23,9 @@ export function UpdateOccurrence () {
         occurrence = occurrences.find((occurrence) => occurrence.id === +idOccurrence)
  
     function handleSubmit (occurrenceUp: Occurrence) {
-        const {title, type, dateTime, location} = occurrenceUp;
+        const {title, type, date, location, description} = occurrenceUp;
         if(idOccurrence)
-            updateOccurence({id: +idOccurrence, title, type, dateTime, location});   
+            updateOccurence({id: +idOccurrence, title, type, description, date, location});   
         return navigate('/');
     }
 
