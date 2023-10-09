@@ -8,17 +8,18 @@ export function CreateOccurrence () {
 
     const {registryOccurrence} = useOccurrence();
 
+
     type Occurrence = {
         title: string,
         type: string,
-        dateTime: string,
+        date: string,
+        description: string,
         location: {lat: number, lng: number}
     }
 
     function handleSubmit (occurrence: Occurrence) {
-        const id =  Math.random() * 5000
-        const {title, type, dateTime, location} = occurrence;
-        registryOccurrence({id, title, type, dateTime, location});   
+        const {title, type, date, location, description} = occurrence;
+        registryOccurrence({title, type, date, description, location});   
         return navigate('/');
     }
 
