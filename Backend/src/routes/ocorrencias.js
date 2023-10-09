@@ -24,11 +24,16 @@ router.get('/:id', async (req, res, next)=>{
 
 router.post('/', async (req, res, next)=>{
     try {
-        var ocorrencia = req.body;
-        console.log(ocorrencia);
-        ocorrencia = await OcorrenciaService.create(ocorrencia);
-        res.json(ocorrencia);
+        let {title, type, date, location, description} = req.body;
+        const modelLocation = {
+            type: 'Point',
+            coordinates: [location.lat, location.lng]
+        }
+        let ocorrencia = {title, type, date, location: modelLocation, description}
+        const novaOcorrencia = await OcorrenciaService.create(ocorrencia);
+        res.json(novaOcorrencia);
     } catch (error) {
+        console.log(error)
         next(error);
     }
 });
@@ -47,8 +52,13 @@ router.put('/:id', async (req, res, next)=>{
     try {
         const id = req.params.id;
         const returnObj = req.query.returnObj  == 'true';
-        const novaOcorrencia = req.body;
-        const responseToSend = await OcorrenciaService.update(id, novaOcorrencia, returnObj);
+        let {title, type, date, location, description} = req.body;
+        const modelLocation = {
+            type: 'Point',
+            coordinates: [location.lat, location.lng]
+        }
+        let ocorrencia = {title, type, date, location: modelLocation, description}
+        const responseToSend = await OcorrenciaService.update(id, ocorrencia, returnObj);
         res.json(responseToSend);
     } catch (error) {
         next(error);
