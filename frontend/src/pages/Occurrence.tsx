@@ -1,9 +1,12 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {Map} from '../components/Map'
 import { useOccurrence } from '../hooks/useOccurrences'
+import { useDateTime } from '../hooks/useDateTime';
+
 
 export function Occurrence () {
-
+    
+    const {formatDateTime} = useDateTime();
     const navigate = useNavigate();
     const {occurrences, deleteOccurrence} = useOccurrence();
     const {idOccurrence} = useParams();
@@ -39,8 +42,8 @@ export function Occurrence () {
                     </div>
                     <div className='flex flex-col gap-3'>
                         <p><span className="font-bold">Tipo:</span> {occurrence.type}</p>
-                        <p><span className="font-bold">Data:</span> {occurrence.dateTime}</p>
-                        <p><span className="font-bold">Hora:</span> 16:30</p>
+                        <p><span className="font-bold">Data:</span> {formatDateTime(occurrence.date).date}</p>
+                        <p><span className="font-bold">Hora:</span> {formatDateTime(occurrence.date).time}</p>
                         <p className='w-96'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquid saepe cum modi obcaecati laborum doloremque quasi minus labore nisi error qui eaque rerum eveniet, animi veritatis, quam voluptatem sapiente illum?</p>
                     </div>
                 </div>
