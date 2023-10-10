@@ -3,6 +3,7 @@ import {Select} from '../components/Select'
 import { MapInput } from '../components/MapInput';
 import { Textarea } from '../components/Textarea';
 import { useState } from 'react';
+import { Button } from './Button';
 
 type Occurrence = {
     title: string,
@@ -39,7 +40,7 @@ export function Form ({handleSubmit, initialValues} : FormProps) {
                     <Input id='date-time' label='Data e hora:' type='datetime-local' value={date} handleChange={(ev) => setDate(ev.target.value)} />
                     <Select id='type' label='Tipo:' value={type} handleChange={(ev) => setType(ev.currentTarget.value)}/>
                     <Textarea name='descrição' id='description' label='Descrição:' handleChange={(ev) => setDescription(ev.currentTarget.value) } value={description}/>
-                    <button className='bg-blue-500 mt-5 hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none focus:ring focus:ring-blue-300'>Enviar</button>
+                    <Button text='Enviar' buttonType='send'/>
                 </div>
                 <div>
                     <MapInput location={location} name='Mapa' label='Localização:' handleClick={(ev) => setLocation({lat: ev.latLng.lat(), lng: ev.latLng.lng()})}/>
