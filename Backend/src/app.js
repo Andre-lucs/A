@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import { join } from 'path';
 import cors from 'cors';
-
+import tryConnectMongoDB from './database/MongooseConnect.js';
 //routers
 import ocorrenciasRouter from './routes/ocorrencias.js';
 
@@ -20,7 +20,7 @@ app.use(cors());
 //using routers
 app.use('/', ocorrenciasRouter);
 
-
+tryConnectMongoDB().catch(err => console.log(err));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
