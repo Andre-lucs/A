@@ -1,14 +1,15 @@
-import Ocorrencia from "../model/Ocorrencia.js";
+import {Ocorrencia} from '../model/Ocorrencia.js';
 
 async function create({title, type, date, location, description}) {
     try {
-        const novaOcorrencia = await Ocorrencia.create({
-        title,
-        type,
-        date,
-        location,
-        description
-        });
+        const novaOcorrencia = new Ocorrencia({
+            title,
+            type,
+            date,
+            location,
+            description
+        })
+        await novaOcorrencia.save()
         return novaOcorrencia;
     } catch (error) {
         let err = new Error('Erro ao criar a ocorrência: ' + error.message);
@@ -18,17 +19,19 @@ async function create({title, type, date, location, description}) {
         throw err;
     }
 }
+
 async function findAll(){
     try{
-        const ocorrencias = await Ocorrencia.findAll();
+        const ocorrencias = await Ocorrencia.find();
         return ocorrencias;
     } catch (error) {
         throw new Error('Erro ao resgatar as ocorrências: '+ error.message);
     }
 }
+
 async function findById(id) {
     try{
-        const ocorrencia = await Ocorrencia.findByPk(id);
+        const ocorrencia = await Ocorrencia.findById({_id: id});
         if(!ocorrencia){
             var err =new Error('Ocorrência não encontrada');
             err.status = 404;
@@ -43,11 +46,7 @@ async function findById(id) {
 }
 async function update(id, novosDados, returnObj = false) {
     try{
-        var modified = await Ocorrencia.update(novosDados, {
-            where : {
-                id : id
-            }
-        });
+        const modified = await Ocorrencia.updateOne({_id: id}, novosDados);
         if(returnObj){
             const ocorrencia = await Ocorrencia.findByPk(id);
             return ocorrencia;
@@ -59,11 +58,7 @@ async function update(id, novosDados, returnObj = false) {
 }
 async function deleteById(id) {
     try{
-        await Ocorrencia.destroy({
-            where : {
-                id : id
-            }
-        });
+        await Ocorrencia.deleteOne({_id: id});
     } catch (error) {
         throw new Error(error.message);
     }
