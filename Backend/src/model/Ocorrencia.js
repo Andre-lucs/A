@@ -1,9 +1,9 @@
 // import {DataTypes} from 'sequelize';
 // import sequelize from '../config.js';
-const Ocorrencia = require('../schemas/OccurrenceSchema')
-const mongoose = require('mongoose');
+import {OcorrenciaSchema} from '../schemas/OcorrenciaSchema.js'
+import mongoose from 'mongoose'
 
-const OcorrenciaModel = mongoose.model('Ocorrencia', Ocorrencia)
+export const Ocorrencia = mongoose.model('Ocorrencia', OcorrenciaSchema)
 
 // const Ocorrencia = sequelize.define('ocorrencias', {
 //     id : {
@@ -38,4 +38,3 @@ const OcorrenciaModel = mongoose.model('Ocorrencia', Ocorrencia)
 
 //Ocorrencia.sync();
 
-module.exports = OcorrenciaModel;

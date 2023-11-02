@@ -1,11 +1,11 @@
 import express from 'express';
-import * as OcorrenciaService from '../services/OcorrenciaService.js'
+import * as OcorrenciaController from '../controllers/OcorrenciaController.js'
 
 const router = express.Router();
 
 router.get('/', async (req, res, next)=>{
     try{
-        const ocorrencias = await OcorrenciaService.findAll();
+        const ocorrencias = await OcorrenciaController.findAll();
         res.json(ocorrencias);
     }catch(error){
         next(error);
@@ -15,7 +15,7 @@ router.get('/', async (req, res, next)=>{
 router.get('/:id', async (req, res, next)=>{
     try{
         const id = req.params.id;
-        const ocorrencia = await OcorrenciaService.findById(id);
+        const ocorrencia = await OcorrenciaController.findById(id);
         res.send(ocorrencia);
     }catch(error){
         next(error);
@@ -30,8 +30,8 @@ router.post('/', async (req, res, next)=>{
             coordinates: [location.lat, location.lng]
         }
         let ocorrencia = {title, type, date, location: modelLocation, description}
-        const novaOcorrencia = await OcorrenciaService.create(ocorrencia);
-        res.json(novaOcorrencia);
+        const novaOcorrencia = await OcorrenciaController.create(ocorrencia);
+        res.status(201).json(novaOcorrencia);
     } catch (error) {
         console.log(error)
         next(error);
@@ -41,7 +41,7 @@ router.post('/', async (req, res, next)=>{
 router.delete('/:id', async (req, res, next)=>{
     try {
         const id = req.params.id;
-        OcorrenciaService.deleteById(id);
+        OcorrenciaController.deleteById(id);
         res.sendStatus(200);
     } catch (error) {
         next(error);
@@ -58,7 +58,7 @@ router.put('/:id', async (req, res, next)=>{
             coordinates: [location.lat, location.lng]
         }
         let ocorrencia = {title, type, date, location: modelLocation, description}
-        const responseToSend = await OcorrenciaService.update(id, ocorrencia, returnObj);
+        const responseToSend = await OcorrenciaController.update(id, ocorrencia, returnObj);
         res.json(responseToSend);
     } catch (error) {
         next(error);

@@ -1,7 +1,7 @@
-const {Schema} = require('mongoose');
+import { Schema } from "mongoose";
 
 
-const Ocorrencia = new Schema({
+export const OcorrenciaSchema = new Schema({
     id: Number,
     title: String,
     type: String,
@@ -19,5 +19,3 @@ const Ocorrencia = new Schema({
         }
     }
 })
-
-module.exports = Ocorrencia;
