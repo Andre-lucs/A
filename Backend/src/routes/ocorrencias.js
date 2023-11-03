@@ -25,10 +25,10 @@ router.get('/:id', async (req, res, next)=>{
 router.post('/', async (req, res, next)=>{
     try {
         let {title, type, date, location, description} = req.body;
-        const modelLocation = {
+        const modelLocation = (location.hasOwnProperty('lat') && location.hasOwnProperty('lng')) ? {
             type: 'Point',
             coordinates: [location.lat, location.lng]
-        }
+        } : location;
         let ocorrencia = {title, type, date, location: modelLocation, description}
         const novaOcorrencia = await OcorrenciaController.create(ocorrencia);
         res.status(201).json(novaOcorrencia);
