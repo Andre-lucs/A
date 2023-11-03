@@ -20,12 +20,12 @@ export function UpdateOccurrence () {
 
     
     if(idOccurrence)
-        occurrence = occurrences.find((occurrence) => occurrence.id === +idOccurrence)
+        occurrence = occurrences.find((occurrence) => occurrence._id === +idOccurrence)
  
     function handleSubmit (occurrenceUp: Occurrence) {
         const {title, type, date, location, description} = occurrenceUp;
         if(idOccurrence)
-            updateOccurence({id: +idOccurrence, title, type, description, date, location});   
+            updateOccurence({_id: +idOccurrence, title, type, description, date, location});   
         return navigate('/');
     }
 

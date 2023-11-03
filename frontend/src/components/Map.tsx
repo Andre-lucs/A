@@ -5,7 +5,7 @@ import { useOccurrence } from '../hooks/useOccurrences';
 type MapProps = {
   location?: {lat: number, lng: number}
   className?: string 
-  handleClick?: (occurrenceInfoEv: {id:number, description: string, date: string, title: string}) => void
+  handleClick?: (occurrenceInfoEv: {_id:string, description: string, date: string, title: string}) => void
 }
 
 export function Map ({location, className, handleClick}: MapProps) {
@@ -28,10 +28,10 @@ if(!isLoaded) return <div>Loading...</div>
           mapContainerClassName={className}
           > 
             {
-             !location ? occurrences.map(({id, title, date, description, location}) => (
-                <MarkerF key={id} position={location}  onClick={() => { 
+             !location ? occurrences.map(({_id, title, date, description, location}) => (
+                <MarkerF key={_id} position={location}  onClick={() => { 
                   if(handleClick)
-                     handleClick({id, description, date, title})}} /> 
+                     handleClick({_id, description, date, title})}} /> 
               )) : <MarkerF position={location}/>
             }
       </GoogleMap>

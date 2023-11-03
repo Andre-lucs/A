@@ -5,10 +5,10 @@ import { useState } from "react";
 export function OccurrenceMap () {
 
     const [isDisplay, setIsDisplay] = useState(false);
-    const [occurrenceInfo, setOccurenceInfo] = useState({id: 0, title: '', date: '', description: ''});
+    const [occurrenceInfo, setOccurenceInfo] = useState({_id: '', title: '', date: '', description: ''});
 
 
-    function handleMarkerClick (occurrenceInfoEv: {id:number, description: string, date: string, title: string}) {
+    function handleMarkerClick (occurrenceInfoEv: {_id:string, description: string, date: string, title: string}) {
         setOccurenceInfo(occurrenceInfoEv)
         setIsDisplay(true);
     }
@@ -22,7 +22,7 @@ export function OccurrenceMap () {
             <Card isDisplay={isDisplay} 
                   title={occurrenceInfo.title} 
                   description={occurrenceInfo.description} 
-                  id={occurrenceInfo.id}
+                  _id={occurrenceInfo._id}
                   date={occurrenceInfo.date}
                   handleClick={handleClickCard}
                 />

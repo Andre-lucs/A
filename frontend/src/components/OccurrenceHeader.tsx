@@ -5,7 +5,7 @@ import { Button } from "./Button";
 type OccurrenceHeaderProps = {
     title: string;
     handleDelete: () => void
-    occurrenceId: number
+    occurrenceId: string
 }
 
 export function OccurrenceHeader ({title, handleDelete, occurrenceId}: OccurrenceHeaderProps) {

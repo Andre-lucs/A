@@ -38,7 +38,7 @@ export function Form ({handleSubmit, initialValues} : FormProps) {
                 <div className='flex flex-col '>
                     <Input id='title' label='Título:' type='text' value={title} handleChange={(ev) => setTitle(ev.target.value)} />
                     <Input id='date-time' label='Data e hora:' type='datetime-local' value={date} handleChange={(ev) => setDate(ev.target.value)} />
-                    <Select id='type' label='Tipo:' value={type} handleChange={(ev) => setType(ev.currentTarget.value)}/>
+                    <Select _id='type' label='Tipo:' value={type} handleChange={(ev) => setType(ev.currentTarget.value)}/>
                     <Textarea name='descrição' id='description' label='Descrição:' handleChange={(ev) => setDescription(ev.currentTarget.value) } value={description}/>
                     <Button text='Enviar' buttonType='send'/>
                 </div>

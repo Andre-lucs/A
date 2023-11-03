@@ -12,23 +12,24 @@ export function Occurrence () {
     const {idOccurrence} = useParams();
     let occurrence = null;
 
-    
+
     function handleDelete () {
         if(idOccurrence)
-            deleteOccurrence(+idOccurrence)
+            deleteOccurrence(idOccurrence)
             navigate('/');
     }
     
     if(idOccurrence)
-        occurrence = occurrences.find((occurrence) => occurrence.id === +idOccurrence)
+        occurrence = occurrences.find((occurrence) =>  occurrence._id === idOccurrence)
 
+    
     if(occurrence) 
         return (
             <div className='p-3 flex gap-5 justify-between'>
                     <div>
                         <OccurrenceHeader
                             title={occurrence.title}
-                            occurrenceId={occurrence.id}
+                            occurrenceId={occurrence._id}
                             handleDelete={handleDelete}/>
                         <OccurrenceDetails
                             date={occurrence.date}
@@ -40,4 +41,6 @@ export function Occurrence () {
                     </div>
             </div>
     )
+    else
+       return <h1>Ocorrência não encontrada.</h1>     
 }

@@ -14,7 +14,7 @@ type Location = {
 }
 
 interface Occurrence{
-    id: number,
+    _id: string,
     title: string,
     type: string,
     date: string,
@@ -23,7 +23,7 @@ interface Occurrence{
 }
 
 interface OccurrenceResApi{
-    id: number,
+    _id: string,
     title: string,
     type: string,
     date: string,
@@ -34,7 +34,7 @@ interface OccurrenceResApi{
 interface IOccurrenceContext {
     occurrences: Occurrence[];
     registryOccurrence: (occurrence: { title: string, type: string, date: string, description: string, location: {lat: number, lng: number}}) => void;
-    deleteOccurrence: (idOccurrence : number) => void;
+    deleteOccurrence: (idOccurrence : string) => void;
     updateOccurence: (occurrence : Occurrence) => void
 }
 
@@ -46,15 +46,15 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
 
     const [occurrences, setOccurences] = useState<Occurrence[]>([]);
 
-    const findOccurrence = (id: number) => occurrences.find((occurrence) => occurrence.id === id);
+    const findOccurrence = (id: string) => occurrences.find((occurrence) => occurrence._id === id);
 
     useEffect(() => {
         const fetchOccurrences = async () => {
             try {
                 const response = await fetch('http://localhost:3000/');
                 const occurrencesRes: OccurrenceResApi[] = await response.json();
-                const data = occurrencesRes.map(({id, title, type, date, description, location}) => {
-                    return {id, title, type, date, description, location: {lat: location.coordinates[0], lng: location.coordinates[1]} }
+                const data = occurrencesRes.map(({_id, title, type, date, description, location}) => {
+                    return {_id, title, type, date, description, location: {lat: location.coordinates[0], lng: location.coordinates[1]} }
                 })
                 setOccurences(data);
             } catch(err) {
@@ -75,9 +75,9 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
                 },
                 body: JSON.stringify(occurrence)
             });
-            const {id, title, date, description, type, location}: OccurrenceResApi = await response.json();
-            if (id) {
-                const data = {id, title, date, description, type, location: {lat: location.coordinates[0], lng: location.coordinates[1]}}
+            const {_id, title, date, description, type, location}: OccurrenceResApi = await response.json();
+            if (_id) {
+                const data = {_id, title, date, description, type, location: {lat: location.coordinates[0], lng: location.coordinates[1]}}
                 console.log(data);
                 setOccurences(state => [data, ...state]);
             }
@@ -88,7 +88,7 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
     };
     
 
-    const deleteOccurrence = async (idOccurren: number) => {
+    const deleteOccurrence = async (idOccurren: string) => {
         const occurrenceExists = findOccurrence(idOccurren);
         try {
             await fetch(`http://localhost:3000/${idOccurren}`, {
@@ -97,7 +97,7 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
             if(occurrenceExists) {
                 if(confirm(`Você realmente deseja excluir essa ocorrência?`)) {
                     setOccurences(state => {
-                        const newState = state.filter(({id}) => id !== idOccurren);
+                        const newState = state.filter(({_id}) => _id !== idOccurren);
                         return newState;
                     })
                 }
@@ -109,9 +109,9 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
 
 
     const updateOccurence = async (occurrenceUp: Occurrence) => {
-        const occurrenceExists = findOccurrence(occurrenceUp.id);
+        const occurrenceExists = findOccurrence(occurrenceUp._id);
         try {
-            const response = await fetch(`http://localhost:3000/${occurrenceUp.id}`, {
+            const response = await fetch(`http://localhost:3000/${occurrenceUp._id}`, {
                 method: 'PUT',
                 headers : {
                     'Content-Type' : 'application/json'
@@ -121,7 +121,7 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
             const upOccurrence: OccurrenceResApi = await response.json();
             if(occurrenceExists && upOccurrence) {
                 setOccurences(state => {
-                    const newState = state.map(occurrence => (occurrence.id === occurrenceUp.id ? {...occurrence, ...occurrenceUp} : occurrence))
+                    const newState = state.map(occurrence => (occurrence._id === occurrenceUp._id ? {...occurrence, ...occurrenceUp} : occurrence))
                     return newState;
                 })
             }

@@ -1,7 +1,7 @@
 import React from 'react';
 
 type Select = {
-    id: string;
+    _id: string;
     value: string;
     label: string;
     handleChange:  (event: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -26,11 +26,11 @@ const policeOccurrences = [
     "Roubo de carga",
   ];
   
-export function Select ({id, value, label, handleChange}: Select) {
+export function Select ({_id, value, label, handleChange}: Select) {
     return (
         <div className='flex flex-col gap-1 my-3'>
-            <label htmlFor={id}>{label}</label>
-            <select id={id} value={value} onChange={handleChange} className='border border-black rounded h-10 p-2 ml-1'>
+            <label htmlFor={_id}>{label}</label>
+            <select id={_id} value={value} onChange={handleChange} className='border border-black rounded h-10 p-2 ml-1'>
                 <option value="">Selecione uma opção</option>
                 {
                     policeOccurrences.map(occurrence => (
