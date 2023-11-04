@@ -3,7 +3,7 @@ import {OccurrenceInfoPreview} from '../components/OccurrenceInfoPreview';
 import { useOccurrence } from '../hooks/useOccurrences';
 import { useEffect, useState} from 'react';
 import { Button } from '../components/Button';
-
+import { Graphics } from '../components/Graphics';
 
 export function PoliceOccurrences () {
     
@@ -25,28 +25,30 @@ export function PoliceOccurrences () {
     }
     
     return (
-        <div className='flex flex-col justify-center w-full items-center pt-4'>
-            <div className='w-full flex justify-center gap-3'>
-                <input 
-                    type="text" 
-                    value={searchOccurrence}
-                    placeholder="Buscar ocorrência" 
-                    className='h-10 p-3 w-1/2 rounded border border-black'
-                    onChange={(ev) => filterOccurrences(ev.target.value)}/>
-                <Link to='criar-ocorrencia'>
-                    <Button buttonType='send' text='Adicionar'/>
-                </Link>
+        <div className='flex  w-full bg-slate-200'>
+            <div className='rounded bg-white m-2 shadow'>
+                <div className='w-full flex justify-center gap-3 p-2'>
+                    <input
+                        type="text"
+                        value={searchOccurrence}
+                        placeholder="Buscar ocorrência"
+                        className='h-10 p-3 w-96 rounded border border-black'
+                        onChange={(ev) => filterOccurrences(ev.target.value)}/>
+                    <Link to='criar-ocorrencia'>
+                        <Button buttonType='send' text='Adicionar'/>
+                    </Link>
+                </div>
+                <div className='pt-4 pb-4 w-full flex flex-col max-h-[400px] overflow-y-auto gap-3'>
+                    {occurrences && occurrences.length > 0? (
+                        filteredOccurrences.map(({ title, type, date, _id }) => (
+                            <OccurrenceInfoPreview title={title} key={_id} type={type} _id={_id} date={date} />
+                            ))
+                            ) : (
+                                <p>Sem ocorrências registradas</p>
+                                )}
+                </div>
             </div>
-
-            <div className='pt-4 pb-4 w-full flex flex-col items-center max-h-[300px] overflow-y-auto gap-3'>
-                {occurrences && occurrences.length > 0? (
-                    filteredOccurrences.map(({ title, type, date, _id }) => (
-                        <OccurrenceInfoPreview title={title} key={_id} type={type} _id={_id} date={date} />
-                    ))
-                ) : (
-                    <p>Sem ocorrências registradas</p>
-                )}
-            </div>
+            <Graphics/>
         </div>
     )
 }
