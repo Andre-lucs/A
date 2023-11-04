@@ -54,8 +54,9 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
                 const response = await fetch('http://localhost:3000/');
                 const occurrencesRes: OccurrenceResApi[] = await response.json();
                 const data = occurrencesRes.map(({_id, title, type, date, description, location}) => {
-                    return {_id, title, type, date, description, location: {lat: location.coordinates[0], lng: location.coordinates[1]} }
+                    return {_id, title, type, date, description, location: {lat: location.coordinates[1], lng: location.coordinates[0]} }
                 })
+                console.log(data)
                 setOccurences(data);
             } catch(err) {
                 console.log(err);
@@ -77,7 +78,7 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
             });
             const {_id, title, date, description, type, location}: OccurrenceResApi = await response.json();
             if (_id) {
-                const data = {_id, title, date, description, type, location: {lat: location.coordinates[0], lng: location.coordinates[1]}}
+                const data = {_id, title, date, description, type, location: {lat: location.coordinates[1], lng: location.coordinates[0]}}
                 console.log(data);
                 setOccurences(state => [data, ...state]);
             }

@@ -27,7 +27,7 @@ router.post('/', async (req, res, next)=>{
         let {title, type, date, location, description} = req.body;
         const modelLocation = (location.hasOwnProperty('lat') && location.hasOwnProperty('lng')) ? {
             type: 'Point',
-            coordinates: [location.lat, location.lng]
+            coordinates: [location.lng, location.lat]
         } : location;
         let ocorrencia = {title, type, date, location: modelLocation, description}
         const novaOcorrencia = await OcorrenciaController.create(ocorrencia);
@@ -55,7 +55,7 @@ router.put('/:id', async (req, res, next)=>{
         let {title, type, date, location, description} = req.body;
         const modelLocation = {
             type: 'Point',
-            coordinates: [location.lat, location.lng]
+            coordinates: [location.lng, location.lat]
         }
         let ocorrencia = {title, type, date, location: modelLocation, description}
         const responseToSend = await OcorrenciaController.update(id, ocorrencia, returnObj);
