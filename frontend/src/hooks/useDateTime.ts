@@ -9,3 +9,8 @@ export function useDateTime () {
     }
     return {formatDateTime};
 }
+
+export function calculateRecentsOccurences (date: string) {
+    const currentDate = moment(moment().format("YYYY-MM-DD"));
+    return currentDate.diff(moment(date), "days");
+}
