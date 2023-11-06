@@ -1,5 +1,5 @@
 import {useOccurrence} from '../hooks/useOccurrences';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Form } from '../components/Form';
 
 export function CreateOccurrence () {
@@ -24,9 +24,16 @@ export function CreateOccurrence () {
     }
 
     return (
-        <div>
-            <h1 className='text-xl mt-2xl font-bold'>Adicionar ocorrência: </h1>
-            <Form handleSubmit={handleSubmit}/>
+        <div className='p-8'>
+            <header>
+                <nav>
+                    <Link to={'/'}><button className='underline'>Voltar</button></Link>
+                </nav>
+            </header>
+            <div className='flex flex-col items-center'>
+                <h1 className='text-xl mt-2xl font-bold text-left'>Adicionar ocorrência: </h1>
+                <Form handleSubmit={handleSubmit}/>
+            </div>
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import {useNavigate, useParams } from 'react-router-dom';
+import {Link, useNavigate, useParams } from 'react-router-dom';
 import {Map} from '../components/Map'
 import { useOccurrence } from '../hooks/useOccurrences'
 import { OccurrenceHeader } from '../components/OccurrenceHeader';
@@ -25,8 +25,14 @@ export function Occurrence () {
     
     if(occurrence) 
         return (
-            <div className='p-3 flex gap-5 justify-between'>
-                    <div>
+            <div className='p-8'>
+                <header>
+                    <nav>
+                        <Link to={'/'}><button className='underline'>Voltar</button></Link>
+                    </nav>
+                </header>
+                <div className='flex p-8 gap-10 w-full'>
+                    <div className='flex flex-col pl-36'>
                         <OccurrenceHeader
                             title={occurrence.title}
                             occurrenceId={occurrence._id}
@@ -36,9 +42,8 @@ export function Occurrence () {
                             type={occurrence.type}
                             description={occurrence.description} />
                     </div>
-                    <div>
-                        <Map location={occurrence.location} className='h-96 w-96'/>
-                    </div>
+                    <Map location={occurrence.location} className='h-96 w-96'/>
+                </div>
             </div>
     )
     else

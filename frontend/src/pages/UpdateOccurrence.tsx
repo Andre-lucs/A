@@ -1,5 +1,5 @@
 import {useOccurrence} from '../hooks/useOccurrences';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Form } from '../components/Form';
 
 
@@ -20,20 +20,27 @@ export function UpdateOccurrence () {
 
     
     if(idOccurrence)
-        occurrence = occurrences.find((occurrence) => occurrence._id === +idOccurrence)
+        occurrence = occurrences.find((occurrence) => occurrence._id === idOccurrence)
  
     function handleSubmit (occurrenceUp: Occurrence) {
         const {title, type, date, location, description} = occurrenceUp;
         if(idOccurrence)
-            updateOccurence({_id: +idOccurrence, title, type, description, date, location});   
+            updateOccurence({_id: idOccurrence, title, type, description, date, location});   
         return navigate('/');
     }
 
     if(occurrence) {
         return (
-            <div>
-                <h1 className='text-xl mt-2xl font-bold'>Atualizar ocorrência: </h1>
-                <Form handleSubmit={handleSubmit} initialValues={occurrence}/>
+            <div className='p-8'>
+                <header>
+                    <nav>
+                        <Link to={'/'}><button className='underline'>Voltar</button></Link>
+                    </nav>
+                </header>
+                <div className='flex flex-col items-center'>
+                    <h1 className='text-xl mt-2xl font-bold'>Atualizar ocorrência: </h1>
+                    <Form handleSubmit={handleSubmit} initialValues={occurrence}/>
+                </div>
             </div>
         )
     } else {

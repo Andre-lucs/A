@@ -6,7 +6,7 @@ import "./index.css"
 export default function App() {
  return (
   <OccurrenceProvider>
-      <RouterProvider router={router}/>;
+      <RouterProvider router={router}/>
   </OccurrenceProvider>
  )  
 }
