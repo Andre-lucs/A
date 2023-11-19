@@ -1,4 +1,4 @@
-import {Ocorrencia} from '../models/sequelize/Ocorrencia.js';
+import {Ocorrencia} from '../models/Ocorrencia.js';
 
 async function create({title, type, date, location, description}) {
     try {
