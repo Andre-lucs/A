@@ -5,6 +5,8 @@ import {OccurrenceMap} from './pages/OccurrenceMap'
 import {Occurrence} from './pages/Occurrence'
 import {DashboardLayout} from './DashboardLayout'
 import { UpdateOccurrence } from './pages/UpdateOccurrence';
+import { Login } from './pages/Login';
+import { Register } from './pages/Register';
 
 export const router = createBrowserRouter([
     {
@@ -32,5 +34,13 @@ export const router = createBrowserRouter([
     {
         path: 'atualizar-ocorrencia/:idOccurrence',
         element: <UpdateOccurrence/>
+    },
+    {
+        path: 'login',
+        element: <Login/>
+    }, 
+    {
+        path:'register',
+        element: <Register/>
     }
 ])

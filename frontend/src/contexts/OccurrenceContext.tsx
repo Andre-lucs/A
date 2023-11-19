@@ -5,7 +5,6 @@ interface IOccurrenceProviderProps {
     children: ReactNode
 }
 
-
 type Location = {
     type: string,
     coordinates: [
