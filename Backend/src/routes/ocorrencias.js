@@ -59,7 +59,7 @@ router.put('/:id', async (req, res, next)=>{
         }
         let ocorrencia = {title, type, date, location: modelLocation, description}
         const responseToSend = await OcorrenciaController.update(id, ocorrencia, returnObj);
-        res.json(responseToSend);
+        return res.status(200).send(responseToSend);
     } catch (error) {
         next(error);
     }
