@@ -2,7 +2,7 @@ import {Input} from '../components/Input'
 import {Select} from '../components/Select'
 import { MapInput } from '../components/MapInput';
 import { Textarea } from '../components/Textarea';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { Button } from './Button';
 
 type Occurrence = {
@@ -26,6 +26,24 @@ export function Form ({handleSubmit, initialValues} : FormProps) {
     const [type, setType] = useState(initialValues?.type ?? '');
     const [location, setLocation] = useState(initialValues?.location ?? {lat: -7.413036819721449, lng: -36.919913562309716});
     const [description, setDescription] = useState(initialValues?.description ?? '');
+
+    useEffect(() => {
+        if (navigator.geolocation && !initialValues?.location) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              setLocation({
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              });
+            },
+            () => {
+              console.log("Failed to get user's location");
+            }
+          );
+        } else {
+          console.log('Geolocation is not supported by this browser');
+        }
+      }, []);
     
     function submitForm(ev: React.FormEvent<HTMLFormElement>) {
         ev.preventDefault();
@@ -49,3 +67,5 @@ export function Form ({handleSubmit, initialValues} : FormProps) {
         </div>
     )
 }
+
+

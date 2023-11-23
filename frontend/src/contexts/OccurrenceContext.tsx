@@ -55,7 +55,6 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
                 const data = occurrencesRes.map(({_id, title, type, date, description, location}) => {
                     return {_id, title, type, date, description, location: {lat: location.coordinates[1], lng: location.coordinates[0]} }
                 })
-                console.log(data)
                 setOccurences(data);
             } catch(err) {
                 console.log(err);
@@ -117,11 +116,15 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
                     'Content-Type' : 'application/json'
                 },
                 body: JSON.stringify(occurrenceUp)
-            })
-            const upOccurrence: OccurrenceResApi = await response.json();
-            if(occurrenceExists && upOccurrence) {
+            });
+            console.log(response);
+            const upOccurrenceRes: OccurrenceResApi = await response.json();
+            const {_id, title, date, description, type, location} = upOccurrenceRes;
+            const upOccurrence = {_id, title, date, description, type, location: {lat: location.coordinates[1], lng: location.coordinates[0]}}
+            if(occurrenceExists && upOccurrenceRes) {
+                console.log('Entrou')
                 setOccurences(state => {
-                    const newState = state.map(occurrence => (occurrence._id === occurrenceUp._id ? {...occurrence, ...occurrenceUp} : occurrence))
+                    const newState = state.map(occurrence => (occurrence._id === occurrenceUp._id ? {...occurrence, ...upOccurrence} : occurrence))
                     return newState;
                 })
             }

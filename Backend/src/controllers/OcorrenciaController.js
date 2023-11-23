@@ -1,4 +1,4 @@
-import {Ocorrencia} from '../models/sequelize/Ocorrencia.js';
+import {Ocorrencia} from '../models/Ocorrencia.js';
 
 async function create({title, type, date, location, description}) {
     try {
@@ -51,7 +51,8 @@ async function update(id, novosDados, returnObj = false) {
             const ocorrencia = await Ocorrencia.findByPk(id);
             return ocorrencia;
         }
-        return modified[0];
+        const upOccurence = await Ocorrencia.findById({_id: id});
+        return upOccurence;
     } catch (error) {
         throw new Error(error.message);
     }
