@@ -16,6 +16,8 @@ router.get('/:id', async (req, res, next)=>{
     try{
         const id = req.params.id;
         const ocorrencia = await OcorrenciaController.findById(id);
+        if(!ocorrencia)
+            return res.status(404).send({error: "Ocorrência não encontrada"})
         res.send(ocorrencia);
     }catch(error){
         next(error);
@@ -31,7 +33,10 @@ router.post('/', async (req, res, next)=>{
         } : location;
         let ocorrencia = {title, type, date, location: modelLocation, description}
         const novaOcorrencia = await OcorrenciaController.create(ocorrencia);
-        res.status(201).json(novaOcorrencia);
+        if(novaOcorrencia)
+            return res.status(201).json(novaOcorrencia);
+        if(ocorrencia.error)
+            return res.status(400).send({err: ocorrencia.error});
     } catch (error) {
         console.log(error)
         next(error);
@@ -41,8 +46,10 @@ router.post('/', async (req, res, next)=>{
 router.delete('/:id', async (req, res, next)=>{
     try {
         const id = req.params.id;
-        OcorrenciaController.deleteById(id);
-        res.sendStatus(200);
+        const deletedOccurence = OcorrenciaController.deleteById(id);
+        if(!deletedOccurence.error)
+            return res.status(200);
+        return res.status(deletedOccurence.resStatus).send(deletedOccurence.error);
     } catch (error) {
         next(error);
     }

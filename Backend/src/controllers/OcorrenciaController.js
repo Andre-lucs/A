@@ -2,6 +2,8 @@ import {Ocorrencia} from '../models/Ocorrencia.js';
 
 async function create({title, type, date, location, description}) {
     try {
+        if(!title || !type || !date || !location || !description) 
+            return {error: "Informe todos os dados necessários"};
         const novaOcorrencia = new Ocorrencia({
             title,
             type,
@@ -23,7 +25,12 @@ async function create({title, type, date, location, description}) {
 async function findAll(){
     try{
         const ocorrencias = await Ocorrencia.find();
-        return ocorrencias;
+        if(!ocorrencias)
+            return [];
+        const usefulData = ocorrencias.map(({title, type, date}) => {
+            return {title, type, date}
+        })
+        return usefulData;
     } catch (error) {
         throw new Error('Erro ao resgatar as ocorrências: '+ error.message);
     }
@@ -46,7 +53,9 @@ async function findById(id) {
 }
 async function update(id, novosDados, returnObj = false) {
     try{
-        const modified = await Ocorrencia.updateOne({_id: id}, novosDados);
+        if(!novosDados)
+            return {error: "Informe algum dado a ser atualizado"};
+        await Ocorrencia.updateOne({_id: id}, novosDados);
         if(returnObj){
             const ocorrencia = await Ocorrencia.findByPk(id);
             return ocorrencia;
@@ -59,7 +68,12 @@ async function update(id, novosDados, returnObj = false) {
 }
 async function deleteById(id) {
     try{
-        await Ocorrencia.deleteOne({_id: id});
+        if(!id)
+            return {error: "Ocorrência não encontrada", resStatus: 404}
+        const deletedOccurrence = await Ocorrencia.deleteOne({_id: id});
+        if(deletedOccurrence)
+            return deletedOccurrence;
+        return {error: "Não foi possível remover a ocorrência", resStatus: 400};
     } catch (error) {
         throw new Error(error.message);
     }
