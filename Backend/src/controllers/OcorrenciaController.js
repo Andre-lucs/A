@@ -27,8 +27,8 @@ async function findAll(){
         const ocorrencias = await Ocorrencia.find();
         if(!ocorrencias)
             return [];
-        const usefulData = ocorrencias.map(({title, type, date}) => {
-            return {title, type, date}
+        const usefulData = ocorrencias.map(({title, type, date, id}) => {
+            return {title, type, date, id}
         })
         return usefulData;
     } catch (error) {
@@ -51,10 +51,10 @@ async function findById(id) {
         throw err;
     }
 }
-async function update(id, novosDados, returnObj = false) {
+async function update(id, {title, type, date, location, description} ,returnObj = false) {
     try{
-        if(!novosDados)
-            return {error: "Informe algum dado a ser atualizado"};
+        if(!title || !type || !date || !location || !description)
+            return {error: "Informe todos os dados necessários"};
         await Ocorrencia.updateOne({_id: id}, novosDados);
         if(returnObj){
             const ocorrencia = await Ocorrencia.findByPk(id);
