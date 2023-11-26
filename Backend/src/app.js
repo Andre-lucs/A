@@ -2,11 +2,11 @@ import createError from 'http-errors';
 import express, { json, urlencoded, static as static_ } from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import { join } from 'path';
 import cors from 'cors';
 import tryConnectMongoDB from './database/MongooseConnect.js';
 //routers
 import ocorrenciasRouter from './routes/ocorrencias.js';
+import UserRouter  from './routes/users.js';
 
 var app = express();
 
@@ -18,7 +18,8 @@ app.use(cookieParser());
 app.use(cors());
 
 //using routers
-app.use('/', ocorrenciasRouter);
+app.use('/ocorrencia', ocorrenciasRouter);
+app.use('/user', UserRouter)
 
 tryConnectMongoDB().catch(err => console.log(err));
 
