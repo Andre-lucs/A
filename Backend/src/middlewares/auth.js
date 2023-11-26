@@ -1,18 +1,23 @@
-import { User } from "../models/User";
 import jwt from "jsonwebtoken";
+import 'dotenv/config'
 
-const isAuthenticated = async (req,res,next)=>{
+export const isAuthenticated = async (req,res,next)=>{
     try {
         const {token} = req.cookies;
         if(!token){
             return next('Please login to access the data');
         }
-        const verify = await jwt.verify(token,process.env.SECRET_KEY);
-        req.user = await User.findById(verify.id);
+        await jwt.verify(token, process.env.SECRET_KEY, (err, decoded)=> {
+            if (err){
+                let err = { error:"Token invalido", status: 401};
+                console.log(err)
+                return next(err);
+            }
+            req.user = decoded;
+        });
         next();
     } catch (error) {
        return next(error); 
     }
 }
 
-module.exports = isAuthenticated;
