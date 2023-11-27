@@ -25,5 +25,9 @@ export const OcorrenciaSchema = new Schema({
           type: [Number],
           required: true
         }
+    },
+    userId: {
+      type: String,
+      required: true
     }
 })

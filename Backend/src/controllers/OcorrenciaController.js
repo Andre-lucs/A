@@ -1,15 +1,16 @@
 import {Ocorrencia} from '../models/Ocorrencia.js';
 
-async function create({title, type, date, location, description}) {
+async function create({title, type, date, location, description, userId}) {
     try {
-        if(!title || !type || !date || !location || !description) 
+        if(!title || !type || !date || !location || !description || !userId) 
             return {error: "Informe todos os dados necessários"};
         const novaOcorrencia = new Ocorrencia({
             title,
             type,
             date,
             location,
-            description
+            description,
+            userId
         })
         await novaOcorrencia.save()
         return novaOcorrencia;
@@ -68,14 +69,15 @@ async function update(id, {title, type, date, location, description} ,returnObj 
 }
 async function deleteById(id) {
     try{
+        console.log(id)
         if(!id)
             return {error: "Ocorrência não encontrada", resStatus: 404}
         const deletedOccurrence = await Ocorrencia.deleteOne({_id: id});
-        if(deletedOccurrence)
-            return deletedOccurrence;
+        if(deletedOccurrence.deletedCount > 0)
+            return {message: "Ocorrência excluída com sucesso!"};
         return {error: "Não foi possível remover a ocorrência", resStatus: 400};
     } catch (error) {
-        throw new Error(error.message);
+       console.log(error)
     }
 }
 

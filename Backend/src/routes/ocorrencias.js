@@ -34,7 +34,7 @@ router.post('/', async (req, res, next)=>{
             type: 'Point',
             coordinates: [location.lng, location.lat]
         } : location;
-        let ocorrencia = {title, type, date, location: modelLocation, description}
+        let ocorrencia = {title, type, date, location: modelLocation, description, userId: req.user}
         const novaOcorrencia = await OcorrenciaController.create(ocorrencia);
         if(novaOcorrencia)
             return res.status(201).json(novaOcorrencia);
@@ -51,7 +51,7 @@ router.delete('/:id', async (req, res, next)=>{
         const id = req.params.id;
         const deletedOccurence = OcorrenciaController.deleteById(id);
         if(!deletedOccurence.error)
-            return res.status(200);
+            return res.status(200).send(deletedOccurence.message);
         return res.status(deletedOccurence.resStatus).send(deletedOccurence.error);
     } catch (error) {
         next(error);

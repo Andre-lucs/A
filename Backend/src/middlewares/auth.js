@@ -13,7 +13,7 @@ export const isAuthenticated = async (req,res,next)=>{
                 console.log(err)
                 return next(err);
             }
-            req.user = decoded;
+            req.user = decoded.id;
         });
         next();
     } catch (error) {
