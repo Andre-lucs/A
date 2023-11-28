@@ -1,19 +1,19 @@
-import {Ocorrencia} from '../models/Ocorrencia.js';
+import OcorrenciaModel from '../models/Ocorrencia.js';
+import { ObjectId } from 'mongoose';
 
 async function create({title, type, date, location, description, userId}) {
     try {
         if(!title || !type || !date || !location || !description || !userId) 
             return {error: "Informe todos os dados necessários"};
-        const novaOcorrencia = new Ocorrencia({
+      
+        return await OcorrenciaModel.create({
             title,
             type,
             date,
             location,
             description,
             userId
-        })
-        await novaOcorrencia.save()
-        return novaOcorrencia;
+        });
     } catch (error) {
         let err = new Error('Erro ao criar a ocorrência: ' + error.message);
         if(error.message.includes("violates not-null constraint")){
@@ -25,7 +25,7 @@ async function create({title, type, date, location, description, userId}) {
 
 async function findAll(){
     try{
-        const ocorrencias = await Ocorrencia.find();
+        const ocorrencias = await OcorrenciaModel.find();
         if(!ocorrencias)
             return [];
         const usefulData = ocorrencias.map(({title, type, date, id}) => {
@@ -39,7 +39,7 @@ async function findAll(){
 
 async function findById(id) {
     try{
-        const ocorrencia = await Ocorrencia.findById({_id: id});
+        const ocorrencia = await OcorrenciaModel.findById({_id: id});
         if(!ocorrencia){
             var err =new Error('Ocorrência não encontrada');
             err.status = 404;
@@ -58,7 +58,7 @@ async function update(id, {title, type, date, location, description} ,returnObj 
             return {error: "Informe todos os dados necessários"};
         await Ocorrencia.updateOne({_id: id}, novosDados);
         if(returnObj){
-            const ocorrencia = await Ocorrencia.findByPk(id);
+            const ocorrencia = await OcorrenciaModel.findByPk(id);
             return ocorrencia;
         }
         const upOccurence = await Ocorrencia.findById({_id: id});
@@ -69,10 +69,9 @@ async function update(id, {title, type, date, location, description} ,returnObj 
 }
 async function deleteById(id) {
     try{
-        console.log(id)
-        if(!id)
+        if(await Ocorrencia.findById(id, "_id") != id)
             return {error: "Ocorrência não encontrada", resStatus: 404}
-        const deletedOccurrence = await Ocorrencia.deleteOne({_id: id});
+        const deletedOccurrence = await OcorrenciaModel.deleteOne({_id: id});
         if(deletedOccurrence.deletedCount > 0)
             return {message: "Ocorrência excluída com sucesso!"};
         return {error: "Não foi possível remover a ocorrência", resStatus: 400};
@@ -81,4 +80,4 @@ async function deleteById(id) {
     }
 }
 
-export {create, findAll, findById, update, deleteById};
+export default {create, findAll, findById, update, deleteById, OcorrenciaModel};
