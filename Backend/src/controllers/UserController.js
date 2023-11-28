@@ -1,50 +1,51 @@
-import  {User}  from "../models/User.js";
+import  UserModel  from "../models/User.js";
 import bcryptjs from "bcryptjs"
-import jwt from 'jsonwebtoken'
+import jsonwebtoken from 'jsonwebtoken'
 import 'dotenv/config'
 
 
-export const register = async (req, res) => {
-    const {email, name, password} = req.body;
-
+const register = async ({email, name, password}) => {
     try{
-        if(!email || !name || !password)
-            return res.status(400).send('Insira todas as informações!')
-        const userExists = await User.findOne({email});
-        if(!userExists) {
-            const salt = await bcryptjs.genSalt(10);
-            const pass = await bcryptjs.hash(password, salt);
-            const newUser = new User({email, name, password: pass})
-            await newUser.save();
-            const token = jwt.sign({id: newUser._id}, process.env.SECRET_KEY, {expiresIn: process.env.JWT_EXPIRES})
-            console.log(token)
-            return res.cookie('token', token).json({ success: true, message: 'Usuário cadastrado com sucesso!', data: newUser})
+        if(!email || !name || !password){
+            return {message: "Insira todas as informações!", status: 400}
         }
-        return res.status(400).send('Já existe um usuário com esse email');
+        const userExists = await UserModel.findOne({email});
+        if(userExists){
+            return {message: "Já existe um usuário com esse email", status: 400};
+        }
+
+        const salt = await bcryptjs.genSalt(10);
+        const pass = await bcryptjs.hash(password, salt);
+        const newUser = await UserModel.create({email, name, password: pass});
+        const mytoken = jsonwebtoken.sign({id: newUser._id}, process.env.SECRET_KEY, {expiresIn: process.env.JWT_EXPIRES});
+
+        return {token: mytoken, message: newUser, status: 201};
+
     } catch (err) {
-        res.status(500).json({err})
+        return {message: err, status: 500};
     }
 }
 
-export const login = async (req, res) => {
+const login = async ({email, password}) => {
     try{
-        const {email, password} = req.body;
         if(!email || !password) {
-            return res.status(400).json({message: "Forneça todas as informações de login"});
+            return {message: "Forneça todas as informações de login", status: 400}
         }
 
-        const userExists = await User.findOne({email});
+        const userExists = await UserModel.findOne({email});
         if(!userExists)
-            return res.status(404).json({message: 'Email ou senha inválidos'});
+            return {message: "Email ou senha inválidos", status: 404};
 
         const isPasswordMatched = await bcryptjs.compare(password, userExists.password);
         if(!isPasswordMatched)
-            return res.status(404).json({message: "Email ou senha inválidos"});
+            return {message: "Email ou senha inválidos", status: 404};
 
-        const token = jwt.sign({id: userExists._id}, process.env.SECRET_KEY, {expiresIn: process.env.JWT_EXPIRES});
-        console.log(token)
-        return res.status(200).cookie("token", token).json({message: "Usuário logado com sucesso!", isAuthenticated: true});
+        const mytoken = jsonwebtoken.sign({id: userExists._id}, process.env.SECRET_KEY, {expiresIn: process.env.JWT_EXPIRES});
+
+        return {token: mytoken, message: "Usuário logado com sucesso!", status: 200};
     } catch (err) {
-        res.status(500).send({err})
+        return {message: err, status: 500};
     }
 }
+
+export default {register, login, UserModel};
