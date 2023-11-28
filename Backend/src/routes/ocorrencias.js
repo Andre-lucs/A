@@ -19,9 +19,9 @@ router.get('/:id', async (req, res, next)=>{
     try{
         const id = req.params.id;
         const ocorrencia = await OcorrenciaController.findById(id);
-        if(!ocorrencia)
-            return res.status(404).send({error: "Ocorrência não encontrada"})
-        res.send(ocorrencia);
+        if(ocorrencia.error)
+            return res.status(404).send({error: ocorrencia.error});
+        return res.status(200).send(ocorrencia);
     }catch(error){
         next(error);
     }

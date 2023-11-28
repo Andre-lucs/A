@@ -28,10 +28,7 @@ async function findAll(){
         const ocorrencias = await OcorrenciaModel.find();
         if(!ocorrencias)
             return [];
-        const usefulData = ocorrencias.map(({title, type, date, id}) => {
-            return {title, type, date, id}
-        })
-        return usefulData;
+        return ocorrencias;
     } catch (error) {
         throw new Error('Erro ao resgatar as ocorrências: '+ error.message);
     }
@@ -41,9 +38,7 @@ async function findById(id) {
     try{
         const ocorrencia = await OcorrenciaModel.findById({_id: id});
         if(!ocorrencia){
-            var err =new Error('Ocorrência não encontrada');
-            err.status = 404;
-            throw err;
+          return {error: "Ocorrência não encontrada!"}
         }
         return ocorrencia;
     } catch (error) {
