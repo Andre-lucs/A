@@ -2,8 +2,8 @@ import createError from 'http-errors';
 import express, { json, urlencoded, static as static_ } from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import { join } from 'path';
 import cors from 'cors';
+import { connectRedis } from './database/RedisConnect.js';
 import tryConnectMongoDB from './database/MongooseConnect.js';
 //routers
 import ocorrenciasRouter from './routes/ocorrencias.js';
@@ -18,9 +18,10 @@ app.use(cookieParser());
 app.use(cors());
 
 //using routers
-app.use('/', ocorrenciasRouter);
+app.use('/ocorrencia', ocorrenciasRouter);
 
 tryConnectMongoDB().catch(err => console.log(err));
+connectRedis().catch(err => console.log(err));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
