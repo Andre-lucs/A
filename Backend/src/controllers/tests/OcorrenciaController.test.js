@@ -31,18 +31,69 @@ describe( "OcorrenciaController testes", ()=>{
       expect(createdOccurrence).toEqual(mockcreated)
       
     })
+
     
     
-    test('Deve excluir uma ocorrência', () => {
+    test('Deve excluir uma ocorrência', async () => {
+      OcorrenciaController.OcorrenciaModel.deleteOne.mockReturnValue({ acknowledged: true, deletedCount: 1 });
+
+      const id = new mongoose.Types.ObjectId();
+
+      const resDeletedMessage = await OcorrenciaController.deleteById(id);
+
+      console.log("Retornado do teste atual:" + resDeletedMessage[1])
+
+      expect(resDeletedMessage).toEqual({ acknowledged: true, deletedCount: 1 });
+
+    })
+
+    test('Atualização de ocorrência', async () => {
       
+      const _id = new mongoose.Types.ObjectId();
+
+      const data = {
+        title: "Dois caras em uma moto",
+        type: "Furto de veículo",
+        date: new Date("2023-11-13T04:22:00.000+00:00"),
+        userId: "65634d1b0d428cff79c11220",
+        description: "...",
+        location: {
+          type: "Point",
+          coordinates: [-37.97525516240762, -7.8688234331944065]
+        }
+      }
+
+      const mockReturn = {
+        ...data, _id
+      }
+      OcorrenciaController.OcorrenciaModel.findById.mockReturnValue(mockReturn);
+
+
+      const upOcorrencia = await OcorrenciaController.update(_id, data, true);
+
+      expect(upOcorrencia).toEqual(mockReturn);
     })
 
-    test('Atualização de ocorrência', () => {
-        
-    })
+    test('Encontrar uma ocorrência por id', async () => {
 
-    test('Encontrar uma ocorrência por id', () => {
+      const id = new mongoose.Types.ObjectId();
+      const foundOcorrencia = {
+        _id: id,
+        title: "Dois caras em uma moto",
+        type: "Furto de veículo",
+        date: new Date("2023-11-13T04:22:00.000+00:00"),
+        userId: "65634d1b0d428cff79c11220",
+        description: "...",
+        location: {
+          type: "Point",
+          coordinates: [-37.97525516240762, -7.8688234331944065]
+        }
+      };
+
+      OcorrenciaController.OcorrenciaModel.findById.mockReturnValue(foundOcorrencia);
+      const ocorrencia = await OcorrenciaController.findById(id);
         
+      expect(ocorrencia).toEqual(foundOcorrencia);
     })
 
     test('Deve retornar uma lista de ocorrências', async () => {
@@ -87,14 +138,14 @@ describe( "OcorrenciaController testes", ()=>{
 
         OcorrenciaController.OcorrenciaModel.find.mockReturnValue(mockCreated);
 
-        const occurrences = await OcorrenciaController.findAll();
+        const ocorrencias = await OcorrenciaController.findAll();
 
-        expect(occurrences).toEqual(occurrences);
+        expect(ocorrencias).toEqual(mockCreated);
     })
     
   });
 
-  describe( 'Casos com exeçoes', () => {
+  describe( 'Casos com exeções', () => {
 
     test('deve retornar um erro se algum dado necessário estiver ausente', async () => {
       const resultado = await OcorrenciaController.create({
@@ -108,8 +159,7 @@ describe( "OcorrenciaController testes", ()=>{
       });
 
       expect(resultado).toEqual({ error: 'Informe todos os dados necessários' });
-    }
-    )
+    })
 
     test('Não deve atualizar uma ocorrência com um ou mais atríbutos ausentes', async () => {
       const ocorrencia = {
@@ -121,24 +171,53 @@ describe( "OcorrenciaController testes", ()=>{
       const resultado = await OcorrenciaController.update('', ocorrencia);
 
       expect(resultado).toEqual({error: "Informe todos os dados necessários"})
-    }
-    )
+    })
     
-    test('Não existe ocorrência informada para ser deletada', () => {
+    test('Lista vazia de ocorrência', async () => {
+        OcorrenciaController.OcorrenciaModel.find.mockReturnValue(undefined);
+
+        const ocorrencias = await OcorrenciaController.findAll();
+
+        expect(ocorrencias.length).toBe(0);
+    })
+
+    test('Não existe ocorrência informada para ser deletada', async () => {
+
+      OcorrenciaController.OcorrenciaModel.findOne.mockReturnValue(undefined);
+
+      const deletedOcorrencia = await OcorrenciaController.deleteById();
+
+      expect(deletedOcorrencia).toEqual({error: "Ocorrência não encontrada", resStatus: 404});
+    })
+
+    test('Não deve atualizar ocorrência sem algum atributo', async () => {
+
+      const dados = {
+        title: "Dois caras em uma moto",
+        type: "Furto de veículo",
+        date: new Date("2023-11-13T04:22:00.000+00:00"),
+        userId: "65634d1b0d428cff79c11220",
+        location: {
+        type: "Point",
+        coordinates: [-37.97525516240762, -7.8688234331944065]
+        }
+      }
+
+      const upOcorrencia = await OcorrenciaController.update(mongoose.Types.ObjectId, dados);
       
+      expect(upOcorrencia).toEqual({error: "Informe todos os dados necessários"});
+
     })
 
-    test('Não deve atualizar ocorrência sem algum atributo', () => {
+    test('Falha ao encontrar ocorrência', async () => {
+    
+      OcorrenciaController.OcorrenciaModel.findById.mockReturnValue(undefined);
       
+      const ocorrencia = await OcorrenciaController.findById(new mongoose.Types.ObjectId());
+
+      expect(ocorrencia).toEqual({error: "Ocorrência não encontrada!"})
     })
 
-    test('Falha ao encontrar ocorrência', () => {
-      
-    })
-
-    test('Lista vazia de ocorrência', () => {
-
-    })
 
   } )
 
