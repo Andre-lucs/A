@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import {login, register} from "../controllers/UserController.js"
+import UserController from "../controllers/UserController.js"
 
 
 const UserRouter = Router();
 
 
 UserRouter.post('/register', (req, res)=>{
-  register(req.body)
+  UserController.register(req.body)
   .then((response)=>{
     if(response.token){
       res.cookie('token', response.token).status(response.status).json(response.message)
@@ -17,7 +17,7 @@ UserRouter.post('/register', (req, res)=>{
 });
 
 UserRouter.post('/login', (req, res)=>{
-  login(req.body)
+  UserController.login(req.body)
   .then((response)=>{
     if(response.token){
       res.cookie('token', response.token).status(response.status).json(response.message)
