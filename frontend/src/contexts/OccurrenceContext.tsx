@@ -51,7 +51,7 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
     useEffect(() => {
         const fetchOccurrences = async () => {
             try {
-                const response = await fetch('http://localhost:3000/');
+                const response = await fetch('http://localhost:3000/ocorrencia');
                 const occurrencesRes: OccurrenceResApi[] = await response.json();
                 const data = occurrencesRes.map(({_id, title, type, date, description, location}) => {
                     return {_id, title, type, date, description, location: {lat: location.coordinates[1], lng: location.coordinates[0]} }
@@ -68,7 +68,7 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
 
     const registryOccurrence = async (occurrence: { title: string, type: string, date: string, description: string, location: {lat: number, lng:number} }): Promise<void> => {
         try {
-            const response = await fetch('http://localhost:3000', {
+            const response = await fetch('http://localhost:3000/ocorrencia', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
@@ -91,7 +91,7 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
     const deleteOccurrence = async (idOccurren: string) => {
         const occurrenceExists = findOccurrence(idOccurren);
         try {
-            await fetch(`http://localhost:3000/${idOccurren}`, {
+            await fetch(`http://localhost:3000/ocorrencia/${idOccurren}`, {
                 method: 'DELETE'
             })
             if(occurrenceExists) {
@@ -111,7 +111,7 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
     const updateOccurence = async (occurrenceUp: Occurrence) => {
         const occurrenceExists = findOccurrence(occurrenceUp._id);
         try {
-            const response = await fetch(`http://localhost:3000/${occurrenceUp._id}`, {
+            const response = await fetch(`http://localhost:3000/ocorrencia/${occurrenceUp._id}`, {
                 method: 'PUT',
                 headers : {
                     'Content-Type' : 'application/json'
