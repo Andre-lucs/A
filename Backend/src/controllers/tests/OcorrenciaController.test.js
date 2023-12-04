@@ -34,18 +34,25 @@ describe( "OcorrenciaController testes", ()=>{
 
     
     
-    test('Deve excluir uma ocorrência', async () => {
-      OcorrenciaController.OcorrenciaModel.deleteOne.mockReturnValue({ acknowledged: true, deletedCount: 1 });
+  test('Deve excluir uma ocorrência', async () => {
+    OcorrenciaController.OcorrenciaModel.findByIdAndDelete.mockReturnValue({
+      _id: new mongoose.Types.ObjectId(),
+      title: "Quatri caras em uma moto",
+      type: "Furto de veículo",
+      date: new Date("2023-11-13T04:22:00.000+00:00"),
+      userId: "65634d1b0d428cff79c11220",
+      description: "...",
+      location: {
+      type: "Point",
+      coordinates: [-37.97525516240762, -7.8688234331944065]
+      }});
 
-      const id = new mongoose.Types.ObjectId();
+    const id = new mongoose.Types.ObjectId();
 
-      const resDeletedMessage = await OcorrenciaController.deleteById(id);
+    const resDeletedMessage = await OcorrenciaController.deleteById(id);
 
-      console.log("Retornado do teste atual:" + resDeletedMessage[1])
-
-      expect(resDeletedMessage).toEqual({ acknowledged: true, deletedCount: 1 });
-
-    })
+    expect(resDeletedMessage.deleted).toBe(true);
+  });
 
     test('Atualização de ocorrência', async () => {
       
