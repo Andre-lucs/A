@@ -27,8 +27,19 @@ UserRouter.post('/login', (req, res)=>{
   })
 });
 
-// UserRouter.delete('/user/:id');
+UserRouter.delete('/user/:id', (req, res)=>{
+  UserController.deleteById(req.params.id)
+  .then((response)=>{
+    res.status(response.status).json(response.message)
+  })
 
-// UserRouter.put('user/:id');
+});
+
+UserRouter.put('user/:id', (req, res)=>{
+  UserController.edit(req.params.id, req.body)
+  .then((response)=>{
+    res.status(response.status).json(response.message)
+  })
+});
 
 export default UserRouter;
