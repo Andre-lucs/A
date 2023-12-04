@@ -1,8 +1,8 @@
 import OcorrenciaModel from '../models/Ocorrencia.js';
 
-async function create({title, type, date, location, description, userId}) {
+async function create({title, type, date, location, description}) {
     try {
-        if(!title || !type || !date || !location || !description || !userId) 
+        if(!title || !type || !date || !location || !description) 
             return {error: "Informe todos os dados necessários"};
       
         return await OcorrenciaModel.create({
@@ -11,7 +11,7 @@ async function create({title, type, date, location, description, userId}) {
             date,
             location,
             description,
-            userId
+    
         });
     } catch (error) {
         let err = new Error('Erro ao criar a ocorrência: ' + error.message);
@@ -25,6 +25,7 @@ async function create({title, type, date, location, description, userId}) {
 async function findAll(){
     try{
         const ocorrencias = await OcorrenciaModel.find();
+        console.log(ocorrencias)
         if(!ocorrencias)
             return [];
         return ocorrencias;
@@ -68,12 +69,12 @@ async function update(id, {title, type, date, location, description}, returnObj 
 }
 async function deleteById(id) {
     try{
-        const foundOcorrencia = await OcorrenciaModel.findOne({_id: id})
-        if(!foundOcorrencia || !id)
+        const deletedOcorrencia = await OcorrenciaModel.findByIdAndDelete(id);
+        if(!deletedOcorrencia || !id)
             return {error: "Ocorrência não encontrada", resStatus: 404}
-        const deletedOccurrence = await OcorrenciaModel.deleteOne({_id: id});
-        if(deletedOccurrence){
-            return {message: "Ocorrência excluída com sucesso!"};
+        if(deletedOcorrencia) {
+            console.log(deletedOcorrencia)
+            return {deleted: true};
         }
         return {error: "Não foi possível remover a ocorrência", resStatus: 400};
     } catch (error) {
