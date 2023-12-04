@@ -110,7 +110,7 @@ export function OccurrenceProvider ({children}: IOccurrenceProviderProps) {
     const updateOccurence = async (occurrenceUp: Occurrence) => {
         const occurrenceExists = findOccurrence(occurrenceUp._id);
         try {
-            const response = await fetch(`http://localhost:3000/${occurrenceUp._id}`, {
+            const response = await fetch(`http://localhost:3000/ocorrencia/${occurrenceUp._id}`, {
                 method: 'PUT',
                 headers : {
                     'Content-Type' : 'application/json'
