@@ -34,11 +34,11 @@ const login = async ({email, password}) => {
 
         const userExists = await UserModel.findOne({email});
         if(!userExists)
-            return {message: "Email ou senha inválidos", status: 404};
+            return {message: "Email não cadastrado", status: 404};
 
         const isPasswordMatched = await bcryptjs.compare(password, userExists.password);
         if(!isPasswordMatched)
-            return {message: "Email ou senha inválidos", status: 404};
+            return {message: "Senha inválida", status: 400};
 
         const mytoken = jsonwebtoken.sign({id: userExists._id}, process.env.SECRET_KEY, {expiresIn: process.env.JWT_EXPIRES});
 
@@ -48,4 +48,44 @@ const login = async ({email, password}) => {
     }
 }
 
-export default {register, login, UserModel};
+const edit = async ({id, email, name, password}) => {
+    try {
+        if (!email || !name || !password) {
+            return {message: "Insira todas as informações!", status: 400};
+        }
+
+        if( await UserModel.findOne({email})) { return {message: "Já existe um usuário com esse email", status: 400};}
+
+        const userExists = await UserModel.findById(id);
+        if (!userExists) {
+            return {message: "Usuário não encontrado", status: 404};
+        }
+
+        const salt = await bcryptjs.genSalt(10);
+        const pass = await bcryptjs.hash(password, salt);
+
+        userExists.email = email;
+        userExists.name = name;
+        userExists.password = pass;
+
+        await userExists.save();
+
+        return {message: "Usuário editado com sucesso!", status: 200};
+    } catch (err) {
+        return {message: err, status: 500};
+    }
+};
+
+const deleteById = async (id) => {
+    try {
+        const userExists = await UserModel.findByIdAndDelete(id);
+        if (!userExists) {
+            return {message: "Usuário não encontrado", status: 404};
+        }
+        return {message: "Usuário deletado com sucesso!", status: 200};
+    } catch (err) {
+        return {message: err, status: 500};
+    }
+}
+
+export default {register, login, edit, deleteById, UserModel};
