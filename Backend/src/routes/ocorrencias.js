@@ -6,14 +6,16 @@ const router = express.Router();
 
 router.use(isAuthenticated);
 
-router.get('/', async (req, res, next)=>{
-    try{
+router.get('/', async (req, res, next) => {
+    try {
         const ocorrencias = await OcorrenciaController.findAll();
-        res.json(ocorrencias);
-    }catch(error){
+        console.log(ocorrencias)
+        res.status(200).json(ocorrencias);
+    } catch (error) {
+        console.error(error);
         next(error);
     }
-})
+  });
 
 router.get('/:id', async (req, res, next)=>{
     try{

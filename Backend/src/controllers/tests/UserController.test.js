@@ -25,7 +25,6 @@ describe('Teste de UserController', () => {
 
       const response = await UserController.register(dados);
 
-      console.log(response)
       expect(response.token).toBeDefined();
       expect(response.status).toBe(201);
       expect(response.message).toEqual({...dados, _id: expect.any(mongoose.Types.ObjectId)});
@@ -42,7 +41,6 @@ describe('Teste de UserController', () => {
     })
 
     const response = await UserController.login({email, password: 'asdfghjkl'});
-    console.log(response)
     expect(response.token).toBeDefined();
     expect(response.status).toBe(200);
     expect(response.message).toEqual('Usuário logado com sucesso!');

@@ -25,7 +25,6 @@ async function create({title, type, date, location, description}) {
 async function findAll(){
     try{
         const ocorrencias = await OcorrenciaModel.find();
-        console.log(ocorrencias)
         if(!ocorrencias)
             return [];
         return ocorrencias;
@@ -60,7 +59,6 @@ async function update(id, {title, type, date, location, description}, returnObj 
         });
         if(returnObj){
             const ocorrencia = await OcorrenciaModel.findById(id);
-            console.log(ocorrencia)
             return ocorrencia;
         }
     } catch (error) {
@@ -73,13 +71,12 @@ async function deleteById(id) {
         if(!deletedOcorrencia || !id)
             return {error: "Ocorrência não encontrada", resStatus: 404}
         if(deletedOcorrencia) {
-            console.log(deletedOcorrencia)
             return {deleted: true};
         }
         return {error: "Não foi possível remover a ocorrência", resStatus: 400};
     } catch (error) {
-       console.log(error)
+       return {error: error.message, resStatus: 500};
     }
 }
 
-export default {create, findAll, findById, update, deleteById, OcorrenciaModel};
+export {create, findAll, findById, update, deleteById, OcorrenciaModel};

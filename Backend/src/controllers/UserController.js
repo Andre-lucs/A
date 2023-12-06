@@ -3,6 +3,14 @@ import bcryptjs from "bcryptjs"
 import jsonwebtoken from 'jsonwebtoken'
 import 'dotenv/config'
 
+const findAll = async () => {
+    try {
+        const users = await UserModel.find();
+        return {message: users, status: 200};
+    } catch (err) {
+        return {message: err, status: 500};
+    }
+}
 
 const register = async ({email, name, password}) => {
     try{
@@ -88,4 +96,4 @@ const deleteById = async (id) => {
     }
 }
 
-export default {register, login, edit, deleteById, UserModel};
+export default {register, login, edit, deleteById, findAll, UserModel};

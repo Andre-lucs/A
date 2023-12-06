@@ -1,4 +1,4 @@
-import OcorrenciaController from '../OcorrenciaController';
+import * as OcorrenciaController from '../OcorrenciaController';
 import mongoose from 'mongoose';
 
 jest.mock("../../models/Ocorrencia");

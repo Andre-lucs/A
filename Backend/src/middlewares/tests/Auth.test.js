@@ -12,7 +12,7 @@ describe('isAuthenticated Middleware', () => {
 
     await isAuthenticated(req, res, next);
 
-    expect(next).toHaveBeenCalledWith('Please login to access the data');
+    expect(next).toHaveBeenCalledWith({ message: 'Token de acesso não encontrado', status: 401 });
   });
 
   test('O sistema deve recusar delatar um usuário ao informar seu email e a senha inválidos', async () => {

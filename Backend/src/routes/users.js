@@ -4,6 +4,16 @@ import UserController from "../controllers/UserController.js"
 
 const UserRouter = Router();
 
+UserRouter.get('/', (req, res) => {
+  UserController.findAll()
+    .then((response) => {
+      res.status(response.status).json(response.message);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ message: 'An error occurred' });
+    });
+});
 
 UserRouter.post('/register', (req, res)=>{
   UserController.register(req.body)
@@ -27,7 +37,7 @@ UserRouter.post('/login', (req, res)=>{
   })
 });
 
-UserRouter.delete('/user/:id', (req, res)=>{
+UserRouter.delete('/:id', (req, res)=>{
   UserController.deleteById(req.params.id)
   .then((response)=>{
     res.status(response.status).json(response.message)
@@ -35,7 +45,7 @@ UserRouter.delete('/user/:id', (req, res)=>{
 
 });
 
-UserRouter.put('user/:id', (req, res)=>{
+UserRouter.put('/:id', (req, res)=>{
   UserController.edit(req.params.id, req.body)
   .then((response)=>{
     res.status(response.status).json(response.message)
