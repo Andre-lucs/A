@@ -24,7 +24,7 @@ if(!isLoaded) return <div>Loading...</div>
           zoom={10}
           options={{minZoom: 5}}
           center={location} 
-          id='map' 
+          id='map-container' 
           onClick={handleClick}
           mapContainerClassName='ml-2 rounded h-96 w-96'> 
             <MarkerF position={location} />

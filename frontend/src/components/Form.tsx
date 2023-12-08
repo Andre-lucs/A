@@ -22,10 +22,18 @@ type FormProps = {
 export function Form ({handleSubmit, initialValues} : FormProps) {
     
     const [title, setTitle] = useState(initialValues?.title ?? '')
-    const [date, setDate] = useState(initialValues?.date ?? Date);
+    const [date, setDate] = useState(initialValues?.date ? formatDate(new Date(initialValues?.date)) : new Date().toISOString().split('T')[0]);
     const [type, setType] = useState(initialValues?.type ?? '');
     const [location, setLocation] = useState(initialValues?.location ?? {lat: -7.413036819721449, lng: -36.919913562309716});
     const [description, setDescription] = useState(initialValues?.description ?? '');
+
+    console.log(date);
+
+
+    function formatDate(date: Date) {
+      const isoString = new Date(date).toISOString();
+      return isoString.slice(0, 16); // Formatar para YYYY-MM-DDThh:mm
+    }
 
     useEffect(() => {
         if (navigator.geolocation && !initialValues?.location) {
@@ -43,6 +51,7 @@ export function Form ({handleSubmit, initialValues} : FormProps) {
         } else {
           console.log('Geolocation is not supported by this browser');
         }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
     
     function submitForm(ev: React.FormEvent<HTMLFormElement>) {
@@ -52,7 +61,7 @@ export function Form ({handleSubmit, initialValues} : FormProps) {
 
     return (
         <div>
-            <form onSubmit={submitForm} className='p-3 flex gap-5 justify-between flex-wrap'>
+            <form onSubmit={submitForm} id='form' className='p-3 flex gap-5 justify-between flex-wrap'>
                 <div className='flex flex-col '>
                     <Input id='title' label='Título:' type='text' value={title} handleChange={(ev) => setTitle(ev.target.value)} />
                     <Input id='date-time' label='Data e hora:' type='datetime-local' value={date} handleChange={(ev) => setDate(ev.target.value)} />

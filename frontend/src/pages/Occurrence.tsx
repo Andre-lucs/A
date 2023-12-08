@@ -28,7 +28,7 @@ export function Occurrence () {
             <div className='p-8'>
                 <header>
                     <nav>
-                        <Link to={'/'}><button className='underline'>Voltar</button></Link>
+                        <Link to={'/'}><button id='cy-back-btn' className='underline'>Voltar</button></Link>
                     </nav>
                 </header>
                 <div className='flex p-8 gap-10 w-full'>
@@ -47,5 +47,5 @@ export function Occurrence () {
             </div>
     )
     else
-       return <h1>Ocorrência não encontrada.</h1>     
+       return <h1 id='cy-not-found-message'>Ocorrência não encontrada.</h1>     
 }
