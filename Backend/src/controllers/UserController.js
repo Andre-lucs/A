@@ -12,6 +12,18 @@ const findAll = async () => {
     }
 }
 
+const findById = async (id) => {
+    try {
+        const user = await UserModel.findById(id);
+        if(!user){
+            return {message: "Usuário não encontrado", status: 404};
+        }
+        return {message: user, status: 200};
+    } catch (err) {
+        return {message: err, status: 500};
+    }
+}
+
 const register = async ({email, name, password}) => {
     try{
         if(!email || !name || !password){
@@ -56,7 +68,7 @@ const login = async ({email, password}) => {
     }
 }
 
-const edit = async ({id, email, name, password}) => {
+const edit = async (id, {email, name, password}) => {
     try {
         if (!email || !name || !password) {
             return {message: "Insira todas as informações!", status: 400};
@@ -96,4 +108,4 @@ const deleteById = async (id) => {
     }
 }
 
-export default {register, login, edit, deleteById, findAll, UserModel};
+export default {register, login, edit, deleteById, findAll, findById, UserModel};

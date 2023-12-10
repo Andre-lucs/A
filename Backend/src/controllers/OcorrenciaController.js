@@ -1,6 +1,6 @@
 import OcorrenciaModel from '../models/Ocorrencia.js';
 
-async function create({title, type, date, location, description}) {
+async function create({title, type, date, location, description, userId}) {
     try {
         if(!title || !type || !date || !location || !description) 
             return {error: "Informe todos os dados necessários"};
@@ -11,7 +11,7 @@ async function create({title, type, date, location, description}) {
             date,
             location,
             description,
-    
+            userId
         });
     } catch (error) {
         let err = new Error('Erro ao criar a ocorrência: ' + error.message);

@@ -15,6 +15,17 @@ UserRouter.get('/', (req, res) => {
     });
 });
 
+UserRouter.get('/:id', (req, res) => {
+  UserController.findById(req.params.id)
+    .then((response) => {
+      res.status(response.status).json(response.message);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ message: 'An error occurred' });
+    });
+});
+
 UserRouter.post('/register', (req, res)=>{
   UserController.register(req.body)
   .then((response)=>{

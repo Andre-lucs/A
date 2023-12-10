@@ -9,7 +9,6 @@ router.use(isAuthenticated);
 router.get('/', async (req, res, next) => {
     try {
         const ocorrencias = await OcorrenciaController.findAll();
-        console.log(ocorrencias)
         res.status(200).json(ocorrencias);
     } catch (error) {
         console.error(error);
@@ -38,12 +37,11 @@ router.post('/', async (req, res, next)=>{
         } : location;
         let ocorrencia = {title, type, date, location: modelLocation, description, userId: req.user}
         const novaOcorrencia = await OcorrenciaController.create(ocorrencia);
-        console.log(novaOcorrencia)
         if(!novaOcorrencia.error)
             return res.status(201).json(novaOcorrencia);
         return res.status(400).send({err: ocorrencia.error});
     } catch (error) {
-        console.log(error)
+        console.error(error)
         next(error);
     }
 });
@@ -51,10 +49,10 @@ router.post('/', async (req, res, next)=>{
 router.delete('/:id', async (req, res, next)=>{
     try {
         const id = req.params.id;
-        const {deleted} = await OcorrenciaController.deleteById(id);
-        if(deleted)
-            return res.status(200).send(deletedOccurence.message);
-        return res.status(deletedOccurence.resStatus).send(deletedOccurence.error);
+        const response = await OcorrenciaController.deleteById(id);
+        if(response.deleted)
+            return res.status(200).send({message: 'Ocorrência removida com sucesso!'});
+        return res.status(response.resStatus).send(response.error);
     } catch (error) {
         next(error);
     }
