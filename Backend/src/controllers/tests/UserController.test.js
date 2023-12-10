@@ -61,7 +61,7 @@ describe('Teste de UserController', () => {
         save: jest.fn()
       });
       UserController.UserModel.findOne.mockReturnValue(false);
-      const response = await UserController.edit({id, ...dados});
+      const response = await UserController.edit(id, {...dados});
       expect(response).toEqual({message: "Usuário editado com sucesso!", status: 200});
     });
 
@@ -143,7 +143,7 @@ describe('Teste de UserController', () => {
         };
         const id = new mongoose.Types.ObjectId();
         UserController.UserModel.findOne.mockReturnValue(true);
-        const response = await UserController.edit({id, ...dados});
+        const response = await UserController.edit(id, {...dados});
         expect(response).toEqual({message: "Já existe um usuário com esse email", status: 400});
       });
 
@@ -153,7 +153,7 @@ describe('Teste de UserController', () => {
           name: 'novoNome',
         };
         const id = new mongoose.Types.ObjectId();
-        const response = await UserController.edit({id, ...dados});
+        const response = await UserController.edit(id, {...dados});
         expect(response).toEqual({message: "Insira todas as informações!", status: 400});
       });
 
