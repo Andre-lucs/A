@@ -4,7 +4,6 @@ import { isAuthenticated } from '../middlewares/auth.js';
 
 const router = express.Router();
 
-router.use(isAuthenticated);
 
 router.get('/', async (req, res, next) => {
     try {
