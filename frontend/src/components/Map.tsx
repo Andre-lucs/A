@@ -1,6 +1,8 @@
-import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
 import { useOccurrence } from '../hooks/useOccurrences';
-
+import { MapContainer } from 'react-leaflet/MapContainer'
+import { TileLayer } from 'react-leaflet/TileLayer'
+import { Marker} from 'react-leaflet'
+import "leaflet/dist/leaflet.css";
 
 type MapProps = {
   location?: {lat: number, lng: number}
@@ -11,30 +13,27 @@ type MapProps = {
 export function Map ({location, className, handleClick}: MapProps) {
 
   const {occurrences} = useOccurrence();
-  const { isLoaded } = useLoadScript({
-        googleMapsApiKey: ""
-  })
-
-    
-  const defaultCenter = {lat: -6.945847659061351 , lng: -36.49275309882635};
-
-
-if(!isLoaded) return <div>Loading...</div>    
+ 
   return (
     <div className='w-full min-h-full'>
-      <GoogleMap 
-          zoom={5}
-          center={location ?? defaultCenter} 
-          mapContainerClassName={className}
-          > 
-            {
+
+       <MapContainer center={location? [location.lat, location.lng]: [-6.945847659061351 ,-36.49275309882635]} zoom={8} scrollWheelZoom={true} className={className}>
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {
              !location ? occurrences.map(({_id, title, date, description, location}) => (
-                <MarkerF key={_id} position={location}  onClick={() => { 
-                  if(handleClick)
-                     handleClick({_id, description, date, title})}} /> 
-              )) : <MarkerF position={location}/>
+                <Marker key={_id} position={location}  eventHandlers={
+                  {
+                    click: () => { 
+                      if(handleClick)
+                         handleClick({_id, description, date, title})}
+                  }
+                } /> 
+              )) : <Marker position={location}/>
             }
-      </GoogleMap>
+      </MapContainer>
     </div>
   )
 }

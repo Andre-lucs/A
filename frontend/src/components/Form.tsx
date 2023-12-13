@@ -61,7 +61,7 @@ export function Form ({handleSubmit, initialValues} : FormProps) {
                     <Button text='Enviar' buttonType='send'/>
                 </div>
                 <div>
-                    <MapInput location={location} name='Mapa' label='Localização:' handleClick={(ev) => setLocation({lat: ev.latLng.lat(), lng: ev.latLng.lng()})}/>
+                    <MapInput location={location} name='Mapa' label='Localização:' handleClick={(lat, lng) => setLocation({lat, lng})}/>
                 </div>
             </form>
         </div>
