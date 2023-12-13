@@ -31,13 +31,12 @@ export function MapInput({location, handleClick, name, label,}: MapInputProps) {
   };
 
   return (
-    <div className='flex flex-col gap-1 mt-3 w-full'>
+    <div className='flex flex-col gap-1 mt-3 w-[35rem]  h-[24rem]'>
       <label htmlFor={name}>{label}</label>
       <MapContainer
       center={currentLocation ? currentLocation : [-6.945847659061351, -36.49275309882635]}
       zoom={13}
-      scrollWheelZoom={false}
-      className='h-[500px] w-[700px]'
+      scrollWheelZoom={true}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

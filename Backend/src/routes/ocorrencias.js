@@ -8,6 +8,7 @@ router.get('/', async (req, res, next)=>{
     try{
         const ocorrenciasFromRedis = await redisClient.get('ocorrencias');
         if(ocorrenciasFromRedis){
+            console.log("route: / - get - occurrences from cache");
             return res.status(200).json(JSON.parse(ocorrenciasFromRedis));
         }
         const ocorrencias = await OcorrenciaController.findAll();
@@ -21,11 +22,9 @@ router.get('/', async (req, res, next)=>{
 router.get('/:id', async (req, res, next)=>{
     try{
         const id = req.params.id;
-        console.log(id);
         const ocorrenciaFromRedis = await redisClient.get(id);
-        console.log(ocorrenciaFromRedis)
         if(ocorrenciaFromRedis){
-            console.log('pegou do cache')
+            console.log("route: /:id - get - occurrences from cache");
             return res.status(200).send(JSON.parse(ocorrenciaFromRedis));
         }
         const ocorrencia = await OcorrenciaController.findById(id);
@@ -45,7 +44,6 @@ router.post('/', async (req, res, next)=>{
         } : location;
         let ocorrencia = {title, type, date, location: modelLocation, description}
         const novaOcorrencia = await OcorrenciaController.create(ocorrencia);
-        console.log(novaOcorrencia);
         await redisClient.setEx(String(novaOcorrencia._id), 200, JSON.stringify(novaOcorrencia));
         return res.status(201).json(novaOcorrencia);
     } catch (error) {
@@ -68,6 +66,8 @@ router.put('/:id', async (req, res, next)=>{
     try {
         const id = req.params.id;
         const returnObj = req.query.returnObj  == 'true';
+        if(await redisClient.get(id))
+            await redisClient.del(id);
         let {title, type, date, location, description} = req.body;
         const modelLocation = {
             type: 'Point',
