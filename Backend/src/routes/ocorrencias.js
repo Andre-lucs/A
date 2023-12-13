@@ -22,7 +22,7 @@ router.get('/', async (req, res, next)=>{
 router.get('/:id', async (req, res, next)=>{
     try{
         const id = req.params.id;
-        const ocorrenciaFromRedis = await redisClient.get(id);
+        const ocorrenciaFromRedis = await redisClient.get(String(id));
         if(ocorrenciaFromRedis){
             console.log("route: /:id - get - occurrences from cache");
             return res.status(200).send(JSON.parse(ocorrenciaFromRedis));
@@ -67,6 +67,7 @@ router.put('/:id', async (req, res, next)=>{
         const id = req.params.id;
         const returnObj = req.query.returnObj  == 'true';
         if(await redisClient.get(id))
+            console.log("Removendo do Redis a ocorrência desatualizada");
             await redisClient.del(id);
         let {title, type, date, location, description} = req.body;
         const modelLocation = {
