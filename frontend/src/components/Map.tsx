@@ -17,7 +17,7 @@ export function Map ({location, className, handleClick}: MapProps) {
   return (
     <div className='w-full min-h-full'>
 
-       <MapContainer center={location? [location.lat, location.lng]: [-6.945847659061351 ,-36.49275309882635]} zoom={8} scrollWheelZoom={true} className={className}>
+       <MapContainer center={location? [location.lat, location.lng]: [-6.945847659061351 ,-36.49275309882635]} zoom={8} scrollWheelZoom={true} className={className} id='map'>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -30,11 +30,10 @@ export function Map ({location, className, handleClick}: MapProps) {
                       if(handleClick)
                          handleClick({_id, description, date, title})}
                   }
-                } /> 
-              )) : <Marker position={location}/>
+                } data-cy="marker"/> 
+              )) : <Marker position={location} />
             }
       </MapContainer>
     </div>
   )
 }
-

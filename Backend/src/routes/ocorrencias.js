@@ -4,17 +4,14 @@ import { redisClient } from '../database/RedisConnect.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res, next)=>{
-    try{
-        const ocorrenciasFromRedis = await redisClient.get('ocorrencias');
-        if(ocorrenciasFromRedis){
-            console.log("route: / - get - occurrences from cache");
-            return res.status(200).json(JSON.parse(ocorrenciasFromRedis));
-        }
+
+router.get('/', async (req, res, next) => {
+    try {
         const ocorrencias = await OcorrenciaController.findAll();
-        await redisClient.setEx('ocorrencias', 100, JSON.stringify(ocorrencias));
-        return res.json(ocorrencias);
-    }catch(error){
+        console.log(ocorrencias)
+        res.status(200).json(ocorrencias);
+    } catch (error) {
+        console.error(error);
         next(error);
     }
   });
@@ -37,7 +34,9 @@ router.get('/:id', async (req, res, next)=>{
 
 router.post('/', async (req, res, next)=>{
     try {
+        console.log(req.body)
         let {title, type, date, location, description} = req.body;
+        console.log(location)
         const modelLocation = (location.hasOwnProperty('lat') && location.hasOwnProperty('lng')) ? {
             type: 'Point',
             coordinates: [location.lng, location.lat]

@@ -32,6 +32,7 @@ export function Form ({handleSubmit, initialValues} : FormProps) {
       return isoString.slice(0, 16); // Formatar para YYYY-MM-DDThh:mm
     }
 
+
     useEffect(() => {
         if (navigator.geolocation && !initialValues?.location) {
           navigator.geolocation.getCurrentPosition(
@@ -58,7 +59,7 @@ export function Form ({handleSubmit, initialValues} : FormProps) {
 
     return (
         <div>
-            <form onSubmit={submitForm} className='p-3 flex gap-5 w-full'>
+            <form onSubmit={submitForm} className='p-3 flex gap-5 w-full' id='form'>
                 <div className='flex flex-col '>
                     <Input id='title' label='Título:' type='text' value={title} handleChange={(ev) => setTitle(ev.target.value)} />
                     <Input id='date-time' label='Data e hora:' type='datetime-local' value={date} handleChange={(ev) => setDate(ev.target.value)} />
@@ -73,5 +74,4 @@ export function Form ({handleSubmit, initialValues} : FormProps) {
         </div>
     )
 }
-
 
