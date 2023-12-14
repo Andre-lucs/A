@@ -8,7 +8,6 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
     try {
         const ocorrencias = await OcorrenciaController.findAll();
-        console.log(ocorrencias)
         res.status(200).json(ocorrencias);
     } catch (error) {
         console.error(error);
@@ -30,7 +29,9 @@ router.get('/:id', async (req, res, next)=>{
 
 router.post('/', async (req, res, next)=>{
     try {
+        console.log(req.body)
         let {title, type, date, location, description} = req.body;
+        console.log(location)
         const modelLocation = (location.hasOwnProperty('lat') && location.hasOwnProperty('lng')) ? {
             type: 'Point',
             coordinates: [location.lng, location.lat]

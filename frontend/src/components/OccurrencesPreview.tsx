@@ -31,7 +31,7 @@ export function OccurrencesPreview () {
                         <Button buttonType='send' text='Adicionar'/>
                     </Link>
                 </div>
-                <div className='pt-4 pb-4 w-full flex flex-col h-[250px] overflow-y-auto gap-3'>
+                <div className='pt-4 pb-4 w-full flex flex-col h-[250px] overflow-y-auto gap-3' id="cy-occurrences-list-preview">
                     {occurrences && occurrences.length > 0? (
                         filteredOccurrences.map(({ title, type, date, _id }) => (
                             <OccurrenceInfoPreview title={title} key={_id} type={type} _id={_id} date={date} />

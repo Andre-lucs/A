@@ -12,13 +12,13 @@ export function DashboardOverview () {
     return (
         <div className="flex gap-2 flex-col">
             <div className="flex justify-between ml-3">
-                <DashboardInshight title="Últimos 7 dias:" amount={lastWeekDays}/>
-                <DashboardInshight title="Últimos 15 dias:" amount={lastFifteenDays}/>
-                <DashboardInshight title="Últimos 30 dias:" amount={lastThirstDays}/>
+                <DashboardInshight title="Últimos 7 dias:" amount={lastWeekDays} id="cy-last-7"/>
+                <DashboardInshight title="Últimos 15 dias:" amount={lastFifteenDays} id="cy-last-15"/>
+                <DashboardInshight title="Últimos 30 dias:" amount={lastThirstDays} id="cy-last-30"/>
             </div>
             <div className="flex gap-6 shadow items-center px-2 py-1 w-full ml-2 mr-3 my-1 rounded bg-white">
                 <span className="text-xl">Total:</span>
-                <span className=" text-xl font-semibold text-blue-500">{occurrences.length}</span>
+                <span className=" text-xl font-semibold text-blue-500" id="cy-occurrences-amount">{occurrences.length}</span>
                 </div>
             </div>
     )
