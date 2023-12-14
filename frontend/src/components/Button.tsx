@@ -1,7 +1,8 @@
 
 type ButtonProps = {
     text: string;
-    buttonType: 'delete' | 'send'
+    buttonType: 'delete' | 'send';
+    id?: string;
     handleClick?: () => void
 }
 
@@ -11,6 +12,6 @@ const btnType = {
 }
 
 
-export function Button ({text, handleClick, buttonType}: ButtonProps) {
-    return <button className={`${btnType[buttonType]} py-2 px-4 rounded text-white focus:outline-none`} onClick={handleClick}> {text}</button>
+export function Button ({text, handleClick, buttonType, id}: ButtonProps) {
+    return <button id={id} className={`${btnType[buttonType]} py-2 px-4 rounded text-white focus:outline-none`} onClick={handleClick}> {text}</button>
 }

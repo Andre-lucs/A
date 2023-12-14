@@ -32,7 +32,6 @@ export function Form ({handleSubmit, initialValues} : FormProps) {
       return isoString.slice(0, 16); // Formatar para YYYY-MM-DDThh:mm
     }
 
-
     useEffect(() => {
         if (navigator.geolocation && !initialValues?.location) {
           navigator.geolocation.getCurrentPosition(

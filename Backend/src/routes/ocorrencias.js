@@ -17,7 +17,7 @@ router.get('/', async (req, res, next)=>{
     }catch(error){
         next(error);
     }
-})
+  });
 
 router.get('/:id', async (req, res, next)=>{
     try{
@@ -42,12 +42,12 @@ router.post('/', async (req, res, next)=>{
             type: 'Point',
             coordinates: [location.lng, location.lat]
         } : location;
-        let ocorrencia = {title, type, date, location: modelLocation, description}
+        let ocorrencia = {title, type, date, location: modelLocation, description, userId: req.user}
         const novaOcorrencia = await OcorrenciaController.create(ocorrencia);
         await redisClient.setEx(String(novaOcorrencia._id), 200, JSON.stringify(novaOcorrencia));
         return res.status(201).json(novaOcorrencia);
     } catch (error) {
-        console.log(error)
+        console.error(error)
         next(error);
     }
 });
@@ -55,8 +55,10 @@ router.post('/', async (req, res, next)=>{
 router.delete('/:id', async (req, res, next)=>{
     try {
         const id = req.params.id;
-        OcorrenciaController.deleteById(id);
-        res.sendStatus(200);
+        const response = await OcorrenciaController.deleteById(id);
+        if(response.deleted)
+            return res.status(200).send({message: 'Ocorrência removida com sucesso!'});
+        return res.status(response.resStatus).send(response.error);
     } catch (error) {
         next(error);
     }

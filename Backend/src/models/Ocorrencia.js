@@ -1,5 +1,5 @@
 import {OcorrenciaSchema} from '../schema/OcorrenciaSchema.js'
 import mongoose from 'mongoose'
 
-export const Ocorrencia = mongoose.model('Ocorrencia', OcorrenciaSchema)
+export default mongoose.model('Ocorrencia', OcorrenciaSchema)
 

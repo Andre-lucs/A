@@ -1,16 +1,18 @@
-import {Ocorrencia} from '../models/Ocorrencia.js';
+import OcorrenciaModel from '../models/Ocorrencia.js';
 
-async function create({title, type, date, location, description}) {
+async function create({title, type, date, location, description, userId}) {
     try {
-        const novaOcorrencia = new Ocorrencia({
+        if(!title || !type || !date || !location || !description) 
+            return {error: "Informe todos os dados necessários"};
+      
+        return await OcorrenciaModel.create({
             title,
             type,
             date,
             location,
-            description
-        })
-        await novaOcorrencia.save()
-        return novaOcorrencia;
+            description,
+            userId
+        });
     } catch (error) {
         let err = new Error('Erro ao criar a ocorrência: ' + error.message);
         if(error.message.includes("violates not-null constraint")){
@@ -22,7 +24,9 @@ async function create({title, type, date, location, description}) {
 
 async function findAll(){
     try{
-        const ocorrencias = await Ocorrencia.find();
+        const ocorrencias = await OcorrenciaModel.find();
+        if(!ocorrencias)
+            return [];
         return ocorrencias;
     } catch (error) {
         throw new Error('Erro ao resgatar as ocorrências: '+ error.message);
@@ -31,11 +35,9 @@ async function findAll(){
 
 async function findById(id) {
     try{
-        const ocorrencia = await Ocorrencia.findById({_id: id});
+        const ocorrencia = await OcorrenciaModel.findById({_id: id});
         if(!ocorrencia){
-            var err =new Error('Ocorrência não encontrada');
-            err.status = 404;
-            throw err;
+          return {error: "Ocorrência não encontrada!"}
         }
         return ocorrencia;
     } catch (error) {
@@ -44,25 +46,37 @@ async function findById(id) {
         throw err;
     }
 }
-async function update(id, novosDados, returnObj = false) {
+async function update(id, {title, type, date, location, description}, returnObj = false) {
     try{
-        const modified = await Ocorrencia.updateOne({_id: id}, novosDados);
+        if(!title || !type || !date || !location || !description)
+            return {error: "Informe todos os dados necessários"};
+        await OcorrenciaModel.updateOne({_id: id}, {
+            title,
+            type,
+            date,
+            location,
+            description
+        });
         if(returnObj){
-            const ocorrencia = await Ocorrencia.findByPk(id);
+            const ocorrencia = await OcorrenciaModel.findById(id);
             return ocorrencia;
         }
-        const upOccurence = await Ocorrencia.findById({_id: id});
-        return upOccurence;
     } catch (error) {
         throw new Error(error.message);
     }
 }
 async function deleteById(id) {
     try{
-        await Ocorrencia.deleteOne({_id: id});
+        const deletedOcorrencia = await OcorrenciaModel.findByIdAndDelete(id);
+        if(!deletedOcorrencia || !id)
+            return {error: "Ocorrência não encontrada", resStatus: 404}
+        if(deletedOcorrencia) {
+            return {deleted: true};
+        }
+        return {error: "Não foi possível remover a ocorrência", resStatus: 400};
     } catch (error) {
-        throw new Error(error.message);
+       return {error: error.message, resStatus: 500};
     }
 }
 
-export {create, findAll, findById, update, deleteById};
+export {create, findAll, findById, update, deleteById, OcorrenciaModel};

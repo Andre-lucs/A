@@ -7,6 +7,7 @@ import { connectRedis } from './database/RedisConnect.js';
 import tryConnectMongoDB from './database/MongooseConnect.js';
 //routers
 import ocorrenciasRouter from './routes/ocorrencias.js';
+import UserRouter  from './routes/users.js';
 
 var app = express();
 
@@ -22,7 +23,15 @@ app.use('/ocorrencia', ocorrenciasRouter);
 
 tryConnectMongoDB().catch(err => console.log(err));
 connectRedis().catch(err => console.log(err));
+app.get('/', (req, res) => {
+  res.send('Server is running');
+});
+app.use('/ocorrencia', ocorrenciasRouter);
+app.use('/usuario', UserRouter)
 
+if (process.env.NODE_ENV !== 'test') {
+  tryConnectMongoDB().catch(err => console.log(err));
+}
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
